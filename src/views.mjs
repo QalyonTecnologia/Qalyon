@@ -3,7 +3,7 @@ import { workGallery } from './work-gallery.mjs';
 import { landingDemos } from './landing-demos.mjs';
 import { institutionalDemos } from './institutional-demos.mjs';
 import { portfolioDemos } from './portfolio-demos.mjs';
-import { site, contact, services, products, projects, process, media } from './content.mjs';
+import { site, contact, services, products, projects, process } from './content.mjs';
 
 const escape = value => String(value).replace(/[&<>"']/g, char => ({
   '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
@@ -21,11 +21,6 @@ const projectPath = project => `/projetos/${project.slug}/`;
 const productPath = product => `/produtos/${product.slug}/`;
 
 const brandSymbol = '<img class="brand-symbol" src="/assets/qalyon-symbol.webp" width="99" height="104" alt="">';
-
-const picture = (key, extra = '') => `<img class="photo ${extra}" src="/assets/${key}-640.webp"
-  srcset="/assets/${key}-640.webp 640w, /assets/${key}-1280.webp 1280w"
-  sizes="(max-width: 720px) 92vw, 46vw" width="640" height="360"
-  alt="${escape(media[key])}" loading="lazy" decoding="async">`;
 
 const projectPreview = project => {
   if (project.service === 'sites-institucionais') {
@@ -421,15 +416,43 @@ ${pageIntro('Nossos trabalhos / ' + project.kind, project.title, project.summary
   <div class="actions">${project.demoUrl ? link(project.demoUrl, 'Abrir site demonstrativo (prévia privada)') : ''}${link('/projetos/', 'Voltar aos trabalhos')}${quote(project.service)}</div></section>`;
 
 const aboutPage = `
-${pageIntro('Sobre a Qalyon', 'Tecnologia com propósito e precisão.',
-  'Somos uma software house que desenvolve produtos próprios e soluções digitais sob medida.')}
-<section class="wrap section compact split"><div class="body-copy">
+<section class="about-hero">
+  <div class="about-hero-art" aria-hidden="true">
+    <img src="/assets/loop-1280.webp" srcset="/assets/loop-640.webp 640w, /assets/loop-1280.webp 1280w"
+      sizes="(max-width: 700px) 100vw, 72vw" width="1280" height="720" fetchpriority="high" alt="">
+  </div>
+  <div class="wrap about-hero-inner">
+    <div class="about-hero-copy">
+      ${heading('Sobre a Qalyon', 'Tecnologia com propósito e precisão.',
+        'Somos uma software house que desenvolve produtos próprios e soluções digitais sob medida.')}
+      <a class="arrow-link" href="#nossa-atuacao">Conheça nossa atuação</a>
+    </div>
+  </div>
+</section>
+<section class="wrap section about-focus" id="nossa-atuacao">
   ${sectionTitle('Nossa atuação', 'Duas frentes de desenvolvimento.')}
-  <p>Nos produtos próprios, identificamos processos que podem ser organizados por software. O Atlas é o primeiro SaaS da Qalyon e está em desenvolvimento.</p>
-  <p>Nos serviços digitais, construímos sites, landing pages, portfólios profissionais e sistemas web conforme as necessidades do projeto. A atuação comercial inicial prioriza profissionais autônomos e pequenos negócios.</p>
-  <p>Começamos por entender o problema. A partir daí, definimos o escopo, construímos com etapas de revisão e combinamos como será a entrega.</p></div>
-  ${picture('loop')}</section>
-<section class="tinted"><div class="wrap section">${sectionTitle('Forma de trabalho', 'Clareza em cada etapa.')}${steps(process)}</div></section>
+  <div class="about-branches">
+    <article class="about-branch">
+      <h3>Serviços digitais</h3>
+      <p>Criamos sites, landing pages, portfólios profissionais e sistemas web sob medida, com foco inicial em profissionais autônomos e pequenos negócios.</p>
+      <a class="arrow-link" href="/servicos/">Conhecer os serviços</a>
+    </article>
+    <div class="about-node" aria-hidden="true">
+      <div class="about-node-tilt"><div></div><div></div><div>${brandSymbol}</div></div>
+    </div>
+    <article class="about-branch">
+      <h3>Produtos próprios</h3>
+      <p>Desenvolvemos software para organizar processos. O Atlas, nosso primeiro SaaS, está em desenvolvimento para acompanhar serviços do orçamento ao pagamento.</p>
+      <a class="arrow-link" href="/produtos/atlas/">Conhecer o Atlas</a>
+    </article>
+  </div>
+</section>
+<section class="about-process">
+  <div class="wrap section">
+    ${sectionTitle('Forma de trabalho', 'Clareza em cada etapa.')}
+    <ol class="about-process-list">${process.map(([title, description]) => `<li><h3>${escape(title)}</h3><p>${escape(description)}</p></li>`).join('')}</ol>
+  </div>
+</section>
 ${close()}`;
 
 const whatsapp = contact.whatsappBusiness;
@@ -573,6 +596,7 @@ export function layout(page, origin, isPreview) {
   ${['/', '/projetos/'].includes(page.path) ? '<link rel="stylesheet" href="/assets/work-gallery.css?v=4"><script type="module" src="/assets/work-gallery.js?v=3"></script>' : ''}
   ${page.path === '/servicos/' ? '<link rel="stylesheet" href="/assets/services-page.css?v=2">' : ''}
   ${page.path.startsWith('/servicos/') && page.path !== '/servicos/' ? '<link rel="stylesheet" href="/assets/services-page.css?v=2"><link rel="stylesheet" href="/assets/service-detail.css">' : ''}
+  ${page.path === '/sobre/' ? '<link rel="stylesheet" href="/assets/about-page.css">' : ''}
   ${page.script ? `<script src="${page.script}" defer></script>` : ''}
 </head>
 <body>

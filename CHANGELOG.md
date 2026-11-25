@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.9.0
+
+- Redesenha a página Sobre com abertura 3D, apresentação das duas frentes da empresa e linha de trabalho.
+
 ## 2.8.0
 
 - Redesenha as quatro páginas de serviço com composições 3D, escopo organizado e acesso às demonstrações.

@@ -1,0 +1,96 @@
+.about-hero {
+  isolation: isolate;
+  position: relative;
+  display: grid;
+  align-items: center;
+  overflow: hidden;
+  min-height: clamp(470px, 55vw, 690px);
+  border-bottom: 1px solid #344036;
+  background: #0d1216;
+}
+.about-hero-art { position: absolute; z-index: -1; inset: 0 0 0 27%; }
+.about-hero-art img { width: 100%; height: 100%; object-fit: cover; object-position: 64% center; }
+.about-hero-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #0d1216, #0d1216c7 15%, transparent 57%), linear-gradient(0deg, #0d1216b5, transparent 30%);
+}
+.about-hero-inner { padding-block: clamp(52px, 8vw, 126px); }
+.about-hero-copy { width: min(52%, 590px); container-type: inline-size; }
+.about-hero-copy h1 {
+  font-size: clamp(2rem, 5vw, 5.2rem);
+  font-size: clamp(2rem, 14cqi, 5.2rem);
+  max-width: none;
+  text-wrap: balance;
+  overflow-wrap: normal;
+}
+.about-hero-copy .lead { max-width: 38ch; color: #d0d8d3; }
+.about-hero-copy .arrow-link { margin-top: 23px; }
+
+.about-branches {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(100px, 16vw, 205px) minmax(0, 1fr);
+  align-items: center;
+  margin-top: 38px;
+  background: radial-gradient(ellipse at center, #233622, transparent 57%);
+}
+.about-branch {
+  position: relative;
+  z-index: 1;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: clamp(22px, 3.5vw, 40px);
+  border: 1px solid #405047;
+  border-radius: 14px;
+  background: linear-gradient(155deg, #1a2425, #12191d 78%);
+}
+.about-branch h3 { font-size: clamp(1.4rem, 2.65vw, 2.05rem); }
+.about-branch p { color: var(--q-text-secondary-dark); margin: 13px 0 17px; max-width: 38ch; }
+.about-branch .arrow-link { margin-top: auto; }
+.about-node { position: relative; display: grid; place-items: center; perspective: 700px; }
+.about-node::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, #627756, var(--q-lime), #627756);
+  box-shadow: 0 0 12px #b6f21a91;
+}
+.about-node-tilt { position: relative; width: 49%; aspect-ratio: 1; transform: rotateX(53deg) rotateZ(-40deg); transform-style: preserve-3d; }
+.about-node-tilt > div { position: absolute; inset: 0; display: grid; place-items: center; border-radius: 13px; border: 1px solid #8bc94f; box-shadow: inset 0 0 17px #8fee3f28; background: #17241c; }
+.about-node-tilt > div:nth-child(2) { transform: translateZ(11px); background: #203723; }
+.about-node-tilt > div:nth-child(3) { transform: translateZ(22px); border-color: var(--q-lime); background: #1c2f23; box-shadow: 0 0 33px #9dde4559; }
+.about-node .brand-symbol { width: 49%; transform: rotateZ(40deg) scaleY(1.34); }
+
+.about-process { border-block: 1px solid #344036; background: linear-gradient(125deg, #192520, #12191c 72%); }
+.about-process-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding: 0;
+  margin: 42px 0 0;
+  list-style: none;
+}
+.about-process-list li { position: relative; border-top: 1px solid #687f60; padding: 23px clamp(12px, 2vw, 24px) 0 0; }
+.about-process-list li::before { content: ''; position: absolute; top: -5px; left: 0; width: 9px; height: 9px; border: 1px solid var(--q-lime); background: #1e3320; transform: rotate(45deg); }
+.about-process-list h3 { font-size: 1.3rem; }
+.about-process-list p { color: var(--q-text-secondary-dark); margin-top: 10px; max-width: 30ch; }
+
+@media (max-width: 700px) {
+  .about-hero { min-height: 0; }
+  .about-hero-inner { padding-block: 52px 0; }
+  .about-hero-copy { width: min(100%, 480px); }
+  .about-hero-copy h1 { font-size: clamp(2rem, 9vw, 3.4rem); }
+  .about-hero-art { position: relative; inset: auto; order: 1; height: clamp(200px, 56vw, 365px); }
+  .about-hero-art::after { background: linear-gradient(180deg, #0d1216, transparent 28%); }
+  .about-branches { grid-template-columns: minmax(0, 1fr); }
+  .about-node { height: 76px; }
+  .about-node::before { width: 1px; height: 100%; }
+  .about-node-tilt { width: 49px; }
+  .about-process-list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 23px; }
+}
+@media (max-width: 370px) {
+  .about-process-list { grid-template-columns: minmax(0, 1fr); }
+}
