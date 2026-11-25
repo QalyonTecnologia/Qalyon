@@ -1,3 +1,4 @@
+import { workGallery } from './work-gallery.mjs';
 import { landingDemos } from './landing-demos.mjs';
 import { institutionalDemos } from './institutional-demos.mjs';
 import { portfolioDemos } from './portfolio-demos.mjs';
@@ -77,30 +78,6 @@ const projectPreview = project => {
 const portfolioPath = '/projetos/portfolios/';
 const institutionalPath = '/projetos/sites-institucionais/';
 const landingPath = '/projetos/landing-pages/';
-const projectCatalogs = {
-  'portfolio-profissional': { path: portfolioPath, title: 'Portfólio', action: 'Explorar portfólios' },
-  'sites-institucionais': { path: institutionalPath, title: 'Sites institucionais', action: 'Explorar sites institucionais' },
-  'landing-pages': { path: landingPath, title: 'Landing pages', action: 'Explorar landing pages' },
-};
-const portfolioCard = { title: 'Portfólio', category: 'Portfólio profissional', kind: 'Demonstrações', service: 'portfolio-profissional' };
-const projectCards = () => `<div class="cards showcase-grid">${[portfolioCard, ...projects].map(project => {
-  const catalog = projectCatalogs[project.service];
-  const title = catalog?.title ?? project.title;
-  const action = catalog?.action ?? 'Ver demonstração';
-  const href = catalog?.path ?? projectPath(project);
-  return `
-  <article class="card showcase-card">
-    ${projectPreview(project)}
-    <div class="card-copy">
-      <p class="showcase-meta"><span>${project.category}</span><span>${project.kind}</span></p>
-      <h3>${escape(title)}</h3><p>${services.find(service => service.slug === project.service).summary}</p>
-      <a class="showcase-link" href="${href}" aria-label="${catalog ? action : action + ' de ' + escape(title)}">
-        ${action} <span aria-hidden="true">↗</span>
-      </a>
-    </div>
-  </article>`;
-}).join('')}</div>`;
-
 const productPreview = product => product.preview ? `
   <figure class="product-preview">
     <figcaption><span>Fluxo previsto</span><small>Exemplo ilustrativo</small></figcaption>
@@ -271,11 +248,11 @@ const home = `
 </section>
 <section class="band"><div class="wrap band-inner"><span>Estratégia, design e código</span><span>Projetos avulsos</span><span>Propostas sob consulta</span></div></section>
 ${ecosystemSection}
-<section class="tinted showcase-section"><div class="wrap section">
-  <div class="showcase-heading"><div>${sectionTitle('Mostruário', 'Veja como uma ideia ganha forma.',
+<section class="tinted showcase-section" id="nossos-trabalhos"><div class="wrap section">
+  <div class="showcase-heading"><div>${sectionTitle('Nossos trabalhos', 'Veja como uma ideia ganha forma.',
   'Demonstrações autorais para explorar soluções, conteúdo e navegação em diferentes contextos.')}</div>
-  ${link('/projetos/', 'Explorar o mostruário')}</div>
-  ${projectCards()}</div></section>
+  <a class="arrow-link" href="/projetos/#indice-trabalhos">Ver todos os trabalhos</a></div>
+  ${workGallery}</div></section>
 <section class="wrap section">${sectionTitle('Produtos próprios', 'Do orçamento ao pagamento, em um só fluxo.')}${productCards()}</section>
 ${flowSection}
 ${benefitsSection}
@@ -329,7 +306,7 @@ const catalogIcons = {
 };
 
 const catalogPage = ({ title, description, heading, groups, filterLabel }) => `
-${pageIntro('Mostruário Qalyon', title, description, link('/projetos/', 'Voltar à seleção de projetos'))}
+${pageIntro('Nossos trabalhos', title, description, link('/projetos/', 'Voltar à seleção de projetos'))}
 <section class="tinted" id="portfolios-demonstrativos" data-project-catalog><div class="wrap section compact">
   <h2>${heading}</h2>
   <div class="portfolio-index" role="group" aria-label="${filterLabel}" hidden>
@@ -375,19 +352,31 @@ const landingPage = catalogPage({
   filterLabel: 'Filtrar landing pages por objetivo',
 });
 
+const workIndex = [
+  ['Portfólios profissionais', portfolioDemos.flatMap(group => group.items)],
+  ['Sites institucionais', institutionalDemos.flatMap(group => group.items)],
+  ['Landing pages', landingDemos.flatMap(group => group.items)],
+  ['Sistemas web', projects.filter(project => project.service === 'sistemas-web')
+    .map(project => ({ title: project.title, url: projectPath(project) }))],
+];
+
 const projectsPage = `
-${pageIntro('Mostruário Qalyon', 'Projetos e demonstrações.',
+${pageIntro('Nossos trabalhos', 'Projetos e demonstrações.',
   'Explore exemplos autorais de sites, campanhas e sistemas. Cada demonstração apresenta um cenário fictício e escolhas de projeto.')}
-<section class="wrap section compact">${sectionTitle('Seleção de projetos', 'Veja os exemplos em contexto.')}${projectCards()}</section>
+<section class="wrap section compact">${sectionTitle('Seleção de projetos', 'Veja os exemplos em contexto.')}${workGallery}</section>
+<section class="wrap section compact" id="indice-trabalhos"><h2>Todos os trabalhos</h2>
+  <div class="work-index">${workIndex.map(([name, items]) => `<div><h3>${escape(name)}</h3>
+    <ul>${items.map(item => `<li><a href="${escape(item.url)}">${escape(item.title)}</a></li>`).join('')}</ul></div>`).join('')}</div>
+</section>
 ${close()}`;
 
 const projectPage = project => `
-${pageIntro('Mostruário / ' + project.kind, project.title, project.summary)}
+${pageIntro('Nossos trabalhos / ' + project.kind, project.title, project.summary)}
 <section class="wrap section compact"><div class="demo">
   <p class="label">${project.kind === 'Demonstração' ? 'Amostra visual / cenário fictício' : 'Apresentação do projeto'}</p><div class="split">
   <div><h2>${project.exampleTitle}</h2><p>${project.exampleText}</p></div>${projectPreview(project)}</div>
   <ol class="demo-items">${project.sections.map(item => `<li>${item}</li>`).join('')}</ol></div>
-  <div class="actions">${project.demoUrl ? link(project.demoUrl, 'Abrir site demonstrativo (prévia privada)') : ''}${link('/projetos/', 'Voltar ao mostruário')}${quote(project.service)}</div></section>`;
+  <div class="actions">${project.demoUrl ? link(project.demoUrl, 'Abrir site demonstrativo (prévia privada)') : ''}${link('/projetos/', 'Voltar aos trabalhos')}${quote(project.service)}</div></section>`;
 
 const aboutPage = `
 ${pageIntro('Sobre a Qalyon', 'Tecnologia com propósito e precisão.',
@@ -507,10 +496,10 @@ export const pages = [
   ...services.map(service => ({ path: servicePath(service), title: service.title + ' — Qalyon', description: service.summary, body: servicePage(service) })),
   { path: '/produtos/', title: 'Produtos próprios — Qalyon', description: 'Conheça os produtos próprios da Qalyon, incluindo o Atlas, primeiro SaaS da empresa, em desenvolvimento.', body: productsPage },
   ...products.map(product => ({ path: productPath(product), title: product.title + ' by Qalyon — Em desenvolvimento', description: product.summary, body: productPage(product) })),
-  { path: '/projetos/', title: 'Projetos e demonstrações — Qalyon', description: 'Explore o mostruário autoral da Qalyon, com exemplos de portfólio profissional, landing page e sistema web.', body: projectsPage },
-  { path: portfolioPath, title: 'Portfólios profissionais — Mostruário Qalyon', description: 'Explore demonstrações de portfólios profissionais em Advocacia, Psicologia, Nutrição, Fisioterapia e Personal Trainer.', body: portfolioPage, script: '/assets/portfolio-filter.js' },
-  { path: institutionalPath, title: 'Sites institucionais — Mostruário Qalyon', description: 'Explore sites institucionais demonstrativos por área de atuação.', body: institutionalPage, script: '/assets/portfolio-filter.js' },
-  { path: landingPath, title: 'Landing pages — Mostruário Qalyon', description: 'Explore landing pages demonstrativas para gerar pedidos, agendamentos e solicitações de orçamento.', body: landingPage, script: '/assets/portfolio-filter.js' },
+  { path: '/projetos/', title: 'Projetos e demonstrações — Qalyon', description: 'Explore os trabalhos autorais da Qalyon, com exemplos de portfólio profissional, landing page e sistema web.', body: projectsPage },
+  { path: portfolioPath, title: 'Portfólios profissionais — Nossos trabalhos', description: 'Explore demonstrações de portfólios profissionais em Advocacia, Psicologia, Nutrição, Fisioterapia e Personal Trainer.', body: portfolioPage, script: '/assets/portfolio-filter.js' },
+  { path: institutionalPath, title: 'Sites institucionais — Nossos trabalhos', description: 'Explore sites institucionais demonstrativos por área de atuação.', body: institutionalPage, script: '/assets/portfolio-filter.js' },
+  { path: landingPath, title: 'Landing pages — Nossos trabalhos', description: 'Explore landing pages demonstrativas para gerar pedidos, agendamentos e solicitações de orçamento.', body: landingPage, script: '/assets/portfolio-filter.js' },
   ...projects.map(project => ({ path: projectPath(project), title: project.title + ' — Demonstração Qalyon', description: project.summary, body: projectPage(project) })),
   { path: '/sobre/', title: 'Sobre a Qalyon — Software house', description: 'Entenda como a Qalyon cria produtos SaaS e desenvolve soluções digitais sob medida.', body: aboutPage },
   { path: '/contato/', title: 'Solicitar orçamento — Qalyon', description: 'Prepare um briefing para seu projeto digital ou consulte o canal de atendimento da Qalyon.', body: contactPage, script: '/assets/contact.js' },
@@ -539,6 +528,7 @@ export function layout(page, origin, isPreview) {
   <link rel="stylesheet" href="/assets/styles.css">
   <script type="module" src="/assets/motion.js"></script>
   ${page.path === '/' ? '<script type="module" src="/assets/experience.js"></script><script type="module" src="/assets/ecosystem.js"></script>' : ''}
+  ${['/', '/projetos/'].includes(page.path) ? '<link rel="stylesheet" href="/assets/work-gallery.css"><script type="module" src="/assets/work-gallery.js"></script>' : ''}
   ${page.script ? `<script src="${page.script}" defer></script>` : ''}
 </head>
 <body>

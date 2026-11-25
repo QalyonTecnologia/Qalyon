@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.5.0
+
+- Adiciona a vitrine com quatro destaques interativos, links para demonstrações e um índice completo de projetos.
+
 ## 2.4.5
 
 - Reintroduz o subtítulo O projeto certo para o seu objetivo com a hierarquia de títulos do site.

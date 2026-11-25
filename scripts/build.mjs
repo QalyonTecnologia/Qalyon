@@ -17,8 +17,11 @@ await rm(dist, { recursive: true, force: true });
 await mkdir(dist, { recursive: true });
 await cp(join(root, 'src/assets'), join(dist, 'assets'), { recursive: true });
 await build({
-  entryPoints: [join(root, 'src/scenes/ecosystem.js')],
-  outfile: join(dist, 'assets/ecosystem-scene.js'),
+  entryPoints: {
+    'ecosystem-scene': join(root, 'src/scenes/ecosystem.js'),
+    'work-stage': join(root, 'src/scenes/work-stage.js'),
+  },
+  outdir: join(dist, 'assets'),
   bundle: true,
   minify: true,
   format: 'esm',
