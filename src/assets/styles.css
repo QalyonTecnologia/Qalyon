@@ -548,12 +548,18 @@ main:has(.hero-stage)::before { background-position: right 1050px, bottom left; 
   background: linear-gradient(90deg, transparent, var(--q-lime), transparent);
   box-shadow: 0 0 13px #b6f21a90;
 }
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("./fonts/space-grotesk-600.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
 .ecosystem-name {
   display: grid;
   transform: rotateX(10deg);
   transform-style: preserve-3d;
-  font: 680 clamp(1.32rem, 3.4vw, 2.5rem)/1.12 "Inter Display", Inter, sans-serif;
-  letter-spacing: -.045em;
+  font: 600 clamp(1.32rem, 3.4vw, 2.5rem)/1.12 "Space Grotesk", var(--display);
+  letter-spacing: -.025em;
   text-wrap: balance;
   overflow-wrap: anywhere;
 }

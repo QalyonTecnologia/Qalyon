@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.3.2
+
+- O letreiro da maquete usa Space Grotesk Semibold, hospedada no site.
+
 ## 2.3.1
 
 - O painel da maquete reúne os botões no topo e um visor com o nome, a descrição e o link da solução.
