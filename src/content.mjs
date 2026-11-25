@@ -73,15 +73,6 @@ export const products = [{
 
 export const projects = [
   {
-    slug: 'portfolio-de-arquitetura', title: 'Portfólio de arquitetura', kind: 'Demonstração',
-    category: 'Portfólio profissional',
-    summary: 'Uma presença digital para apresentar serviços, projetos e a forma de trabalho de um estúdio independente.',
-    image: 'presence', service: 'portfolio-profissional',
-    exampleTitle: 'Espaços para viver melhor.',
-    exampleText: 'Uma apresentação conceitual de um estúdio de arquitetura, com destaque para projetos residenciais e o processo de projeto.',
-    sections: ['Projetos residenciais', 'Projetos comerciais', 'Etapas do projeto'],
-  },
-  {
     slug: 'landing-page-de-servicos', title: 'Landing page de serviços', kind: 'Demonstração',
     category: 'Landing page',
     summary: 'Uma página de campanha para explicar uma oferta local e orientar o pedido de orçamento.',
@@ -119,7 +110,7 @@ export const process = [
 ];
 
 export const media = {
-  presence: 'Notebook e smartphone com composição visual de um portfólio de arquitetura.',
+  presence: 'Notebook e smartphone exibem uma composição digital em grafite e verde-lima.',
   systems: 'Módulos de grafite interligados por faixas verde-lima.',
   loop: 'Estrutura arquitetônica aberta em grafite, com superfície interna verde-lima.',
 };
