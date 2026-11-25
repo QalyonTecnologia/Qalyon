@@ -544,7 +544,7 @@ export function layout(page, origin, isPreview) {
   <script type="module" src="/assets/motion.js"></script>
   ${page.path === '/' ? '<script type="module" src="/assets/experience.js"></script><script type="module" src="/assets/ecosystem.js"></script>' : ''}
   ${['/', '/projetos/'].includes(page.path) ? '<link rel="stylesheet" href="/assets/work-gallery.css?v=4"><script type="module" src="/assets/work-gallery.js?v=3"></script>' : ''}
-  ${page.path === '/servicos/' ? '<link rel="stylesheet" href="/assets/services-page.css">' : ''}
+  ${page.path === '/servicos/' ? '<link rel="stylesheet" href="/assets/services-page.css?v=2">' : ''}
   ${page.script ? `<script src="${page.script}" defer></script>` : ''}
 </head>
 <body>

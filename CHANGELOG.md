@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.7.1
+
+- Equilibra as linhas do título de Serviços e adapta a tipografia à largura da coluna.
+
 ## 2.7.0
 
 - Redesenha a página de serviços com uma abertura holográfica, catálogo visual e condições comerciais organizadas.
