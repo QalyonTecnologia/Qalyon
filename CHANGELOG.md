@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.4.3
+
+- Integra o Ecossistema à seção de serviços na página inicial e remove os cartões duplicados.
+
 ## 2.4.2
 
 - Aplica a mesma intensidade de sombra aos cinco letreiros da maquete.

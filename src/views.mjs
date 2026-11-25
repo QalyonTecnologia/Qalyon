@@ -211,7 +211,8 @@ const ecosystemSolutions = [
 
 const ecosystemSection = `
 <section class="wrap section" id="ecossistema" data-ecosystem>
-  ${sectionTitle('Ecossistema Qalyon', 'Tecnologia para diferentes momentos do negócio.', 'Explore os serviços digitais e o primeiro produto próprio da Qalyon em uma maquete interativa.')}
+  <h2>Ecossistema Qalyon</h2>
+  <p class="lead">Desenvolvimento para profissionais autônomos, pequenos negócios e equipes com necessidades próprias.</p>
   <div class="ecosystem ecosystem-stage" data-ecosystem-stage>
     <div class="ecosystem-controls" data-ecosystem-controls role="group" aria-label="Escolher solução" hidden>
       ${ecosystemSolutions.map((solution, index) => `<button type="button" aria-pressed="${index === 0}" aria-controls="ecosystem-panel-${index}">${escape(solution.label)}</button>`).join('')}
@@ -269,9 +270,7 @@ const home = `
 </div>
 </section>
 <section class="band"><div class="wrap band-inner"><span>Estratégia, design e código</span><span>Projetos avulsos</span><span>Propostas sob consulta</span></div></section>
-<section class="wrap section">${sectionTitle('Serviços digitais', 'O projeto certo para o seu objetivo.',
-  'Desenvolvimento para profissionais autônomos, pequenos negócios e equipes com necessidades próprias.')}
-  ${serviceList()}</section>
+${ecosystemSection}
 <section class="tinted showcase-section"><div class="wrap section">
   <div class="showcase-heading"><div>${sectionTitle('Mostruário', 'Veja como uma ideia ganha forma.',
   'Demonstrações autorais para explorar soluções, conteúdo e navegação em diferentes contextos.')}</div>
@@ -279,7 +278,6 @@ const home = `
   ${projectCards()}</div></section>
 <section class="wrap section">${sectionTitle('Produtos próprios', 'Do orçamento ao pagamento, em um só fluxo.')}${productCards()}</section>
 ${flowSection}
-${ecosystemSection}
 ${benefitsSection}
 ${close()}`;
 
