@@ -211,7 +211,7 @@ const ecosystemSolutions = [
 
 const ecosystemSection = `
 <section class="wrap section" id="ecossistema" data-ecosystem>
-  <h2>Ecossistema Qalyon</h2>
+  <h2 class="label">Serviços digitais</h2>
   <p class="lead">Desenvolvimento para profissionais autônomos, pequenos negócios e equipes com necessidades próprias.</p>
   <div class="ecosystem ecosystem-stage" data-ecosystem-stage>
     <div class="ecosystem-controls" data-ecosystem-controls role="group" aria-label="Escolher solução" hidden>

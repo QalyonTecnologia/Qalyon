@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.4.4
+
+- Apresenta Serviços digitais com a mesma tipografia dos demais rótulos de seção.
+
 ## 2.4.3
 
 - Integra o Ecossistema à seção de serviços na página inicial e remove os cartões duplicados.
