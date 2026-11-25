@@ -25,7 +25,22 @@
 .catalog-screen { position: absolute; inset: 0; overflow: hidden; border: 1px solid var(--catalog-light); border-radius: 11px; background: #242536; box-shadow: 0 18px 33px #0007; }
 .catalog-screen img { width: 100%; height: 100%; object-fit: cover; }
 .catalog-screen--back { transform: translate3d(-10%, -13%, -26px) rotate(-7deg); background: repeating-linear-gradient(135deg,#d5bbff22 0 1px,transparent 1px 12px), #39304e; }
-.catalog-screen--photo img { object-position: 70% center; }
+.catalog-screen--portfolio { display: grid; grid-template-rows: 8% 16% 33% 43%; container-type: inline-size; background: #f0eaf6; color: #28223a; }
+.catalog-screen--portfolio .catalog-site-toolbar { background: #2d2340; }
+.catalog-screen--portfolio .catalog-site-toolbar i { background: #d5bbff; }
+.catalog-portfolio-nav { display: flex; align-items: center; gap: 4%; padding-inline: 6%; font-size: 2.5cqi; border-bottom: 1px solid #d9cde7; }
+.catalog-portfolio-nav b { margin-right: auto; font-size: 3.45cqi; white-space: nowrap; }
+.catalog-portfolio-intro { align-self: center; display: grid; gap: 4px; padding-inline: 6%; }
+.catalog-portfolio-intro small { color: #604279; font: 600 2.5cqi/1.3 var(--mono); }
+.catalog-portfolio-intro b { font-size: 7.2cqi; letter-spacing: -.055em; line-height: 1; }
+.catalog-portfolio-projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 3%; padding: 0 6% 5%; min-height: 0; }
+.catalog-portfolio-projects > div { display: grid; place-items: center; position: relative; overflow: hidden; border-radius: 4px; min-height: 0; }
+.catalog-portfolio-projects img { position: absolute; inset: 0; }
+.catalog-portfolio-editorial { background: #bca5df; }
+.catalog-portfolio-editorial i { position: absolute; width: 42%; height: 65%; transform: translateX(-18%) rotate(-15deg); background: linear-gradient(#ede3fb 43%, #6f4395 44% 66%, #d6bdea 67%); }
+.catalog-portfolio-editorial i + i { transform: translateX(24%) rotate(13deg); }
+.catalog-portfolio-branding { background: #304e49; }
+.catalog-portfolio-branding i { width: 41%; aspect-ratio: 1; border: 2px solid #c7e9ce; border-radius: 40% 50% 40% 25%; transform: rotate(-28deg); box-shadow: 0 0 0 4px #c7e9ce3d; }
 .catalog-float { position: absolute; right: -8%; bottom: -8%; display: flex; gap: 9px; align-items: center; padding: clamp(8px, 2vw, 20px); transform: translateZ(38px) rotateZ(10deg); border-radius: 8px; color: #171c22; background: var(--catalog-light); box-shadow: 0 12px 22px #080b1380; font-weight: 650; font-size: clamp(.78rem, 1.7vw, 1.2rem); }
 .catalog-float svg { width: clamp(22px, 4vw, 42px); flex: none; }
 .catalog-screen--browser { display: grid; grid-template-rows: 8% 17% 55% 20%; container-type: inline-size; color: #233a34; background: #f0e8d4; }

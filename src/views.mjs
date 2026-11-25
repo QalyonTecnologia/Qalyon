@@ -347,8 +347,17 @@ const catalogArtwork = kind => `<div class="catalog-art" aria-hidden="true">
   <div class="catalog-floor"></div>
   <div class="catalog-art-stack">
     ${kind === 'portfolio' ? `<div class="catalog-screen catalog-screen--back"></div>
-      <div class="catalog-screen catalog-screen--photo"><img src="/assets/catalogo-portfolios.webp" width="768" height="480" alt=""></div>
-      <div class="catalog-float">${icon(catalogIcons.todos)}<span>Seleção de trabalhos</span></div>`
+      <div class="catalog-screen catalog-screen--portfolio">
+        <div class="catalog-site-toolbar"><i></i><i></i><i></i></div>
+        <div class="catalog-portfolio-nav"><b>Marina Luz</b><span>Projetos</span><span>Sobre mim</span><span>Contato</span></div>
+        <div class="catalog-portfolio-intro"><small>Designer independente</small><b>Design e direção de arte.</b></div>
+        <div class="catalog-portfolio-projects">
+          <div><img src="/assets/catalogo-portfolios.webp" width="768" height="480" alt=""></div>
+          <div class="catalog-portfolio-editorial"><i></i><i></i></div>
+          <div class="catalog-portfolio-branding"><i></i></div>
+        </div>
+      </div>
+      <div class="catalog-float">${icon(catalogIcons.todos)}<span>Galeria de projetos</span></div>`
     : kind === 'institutional' ? `<div class="catalog-screen catalog-screen--browser">
         <div class="catalog-site-toolbar"><i></i><i></i><i></i></div>
         <div class="catalog-site-nav"><b>Norte Engenharia</b><span>Empresa</span><span>Soluções</span><span>Contato</span></div>
@@ -659,7 +668,7 @@ export function layout(page, origin, isPreview) {
   ${page.path === '/servicos/' ? '<link rel="stylesheet" href="/assets/services-page.css?v=2">' : ''}
   ${page.path.startsWith('/servicos/') && page.path !== '/servicos/' ? '<link rel="stylesheet" href="/assets/services-page.css?v=2"><link rel="stylesheet" href="/assets/service-detail.css">' : ''}
   ${page.path === '/sobre/' ? '<link rel="stylesheet" href="/assets/about-page.css">' : ''}
-  ${[portfolioPath, institutionalPath, landingPath].includes(page.path) || projects.some(project => project.service === 'sistemas-web' && projectPath(project) === page.path) ? '<link rel="stylesheet" href="/assets/project-catalog.css?v=2">' : ''}
+  ${[portfolioPath, institutionalPath, landingPath].includes(page.path) || projects.some(project => project.service === 'sistemas-web' && projectPath(project) === page.path) ? '<link rel="stylesheet" href="/assets/project-catalog.css?v=3">' : ''}
   ${page.script ? `<script src="${page.script}" defer></script>` : ''}
 </head>
 <body>
