@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.5.1
+
+- Suaviza a inclinação das maquetes em ambos os eixos e o retorno após a saída do ponteiro.
+
 ## 2.5.0
 
 - Adiciona a vitrine com quatro destaques interativos, links para demonstrações e um índice completo de projetos.

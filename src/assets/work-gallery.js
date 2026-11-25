@@ -8,6 +8,24 @@ let selected = 0;
 let art;
 let render;
 let frame = 0;
+let assembly;
+let pointerX = 0;
+let pointerY = 0;
+
+function resetTilt() {
+  cancelAnimationFrame(frame);
+  frame = 0;
+  assembly.style.removeProperty('--work-tilt');
+}
+
+function updateTilt() {
+  frame = 0;
+  const bounds = art.getBoundingClientRect();
+  if (!bounds.width || !bounds.height) return;
+  const across = (pointerX - bounds.left) / bounds.width - .5;
+  const down = (pointerY - bounds.top) / bounds.height - .5;
+  assembly.style.setProperty('--work-tilt', `rotateX(${-down * 8}deg) rotateY(${across * 15}deg)`);
+}
 
 function draw() {
   if (!render) return;
@@ -19,7 +37,7 @@ function select(index) {
   if (art) {
     resize.unobserve(art);
     art.classList.remove('is-rendered');
-    art.style.removeProperty('--yaw');
+    resetTilt();
   }
   selected = index;
   buttons.forEach((button, i) => {
@@ -27,6 +45,7 @@ function select(index) {
     panels[i].hidden = i !== index;
   });
   art = panels[index].querySelector('.work-art');
+  assembly = art.querySelector('.work-assembly');
   if (render) art.prepend(canvas);
   resize.observe(art);
   draw();
@@ -36,18 +55,18 @@ select(0);
 controls.hidden = false;
 gallery.classList.add('is-active');
 
-gallery.addEventListener('pointermove', event => {
-  if (event.pointerType !== 'mouse' || reducedMotion.matches || document.documentElement.hasAttribute('data-motion-paused')) return;
-  if (!art.contains(event.target)) { art.style.removeProperty('--yaw'); return; }
-  if (frame) cancelAnimationFrame(frame);
-  frame = requestAnimationFrame(() => {
-    const box = art.getBoundingClientRect();
-    const offset = Math.max(-.5, Math.min(.5, (event.clientX - box.left) / box.width - .5));
-    art.style.setProperty('--yaw', offset * 15 + 'deg');
-    frame = 0;
+for (const panel of panels) {
+  const surface = panel.querySelector('.work-art');
+  surface.addEventListener('pointermove', event => {
+    if (event.pointerType !== 'mouse' || reducedMotion.matches || document.documentElement.hasAttribute('data-motion-paused')) return;
+    pointerX = event.clientX;
+    pointerY = event.clientY;
+    if (!frame) frame = requestAnimationFrame(updateTilt);
   });
-});
-gallery.addEventListener('pointerleave', () => { cancelAnimationFrame(frame); frame = 0; art.style.removeProperty('--yaw'); });
+  surface.addEventListener('pointerleave', resetTilt);
+  surface.addEventListener('pointercancel', resetTilt);
+}
+reducedMotion.addEventListener('change', resetTilt);
 canvas.addEventListener('webglcontextlost', () => { render = undefined; art.classList.remove('is-rendered'); });
 const observer = new IntersectionObserver(async ([entry]) => {
   if (!entry.isIntersecting) return;
