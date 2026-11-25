@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.11.1
+
+- Redesenha a seção Todos os trabalhos com painéis responsivos por categoria e links diretos às demonstrações.
+
 ## 2.11.0
 
 - Redesenha a página principal de Projetos com maquetes em perspectiva, navegação por categoria e vitrine de destaques.

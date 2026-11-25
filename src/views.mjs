@@ -445,6 +445,13 @@ const workIndex = [
     items: systemProjects.map(project => ({ title: project.title, url: projectPath(project) })) },
 ];
 
+const projectIndexIcons = {
+  portfolio: catalogIcons.todos,
+  institutional: 'M6 9h36v30H6z M6 17h36 M12 13h.1 M17 13h.1 M13 24h10v8H13z M28 24h7 M28 30h7',
+  landing: 'M8 10h32v28H8z M15 18h18 M15 24h14 M15 30h9',
+  systems: 'M8 10h32v28H8z M8 18h32 M19 18v20 M29 18v20 M12 24h3 M22 24h4 M33 24h3',
+};
+
 const projectsPage = `
 <div class="projects-overview">
   <section class="projects-hero">
@@ -481,8 +488,17 @@ const projectsPage = `
   </section>
   <section class="wrap section" id="indice-trabalhos">
     <h2>Todos os trabalhos</h2>
-    <div class="work-index">${workIndex.map(({ name, items, theme }) => `<div id="${theme === 'systems' ? 'sistemas-web' : 'trabalhos-' + theme}"><h3>${escape(name)}</h3>
-      <ul>${items.map(item => `<li><a href="${escape(item.url)}">${escape(item.title)}</a></li>`).join('')}</ul></div>`).join('')}</div>
+    <div class="projects-index">${workIndex.map(({ name, items, theme }) => `
+      <section class="projects-index-panel projects-category--${theme}" id="${theme === 'systems' ? 'sistemas-web' : 'trabalhos-' + theme}" aria-labelledby="indice-${theme}">
+        <div class="projects-index-heading">
+          <span class="projects-index-icon" aria-hidden="true">${icon(projectIndexIcons[theme])}</span>
+          <div>
+            <h3 id="indice-${theme}">${escape(name)}</h3>
+            <p>${items.length} ${items.length === 1 ? 'demonstração' : 'demonstrações'}</p>
+          </div>
+        </div>
+        <ul>${items.map(item => `<li><a href="${escape(item.url)}">${escape(item.title)}</a></li>`).join('')}</ul>
+      </section>`).join('')}</div>
   </section>
 </div>
 ${close()}`;
@@ -702,7 +718,7 @@ export function layout(page, origin, isPreview) {
   ${page.path.startsWith('/servicos/') && page.path !== '/servicos/' ? '<link rel="stylesheet" href="/assets/services-page.css?v=2"><link rel="stylesheet" href="/assets/service-detail.css">' : ''}
   ${page.path === '/sobre/' ? '<link rel="stylesheet" href="/assets/about-page.css">' : ''}
   ${[portfolioPath, institutionalPath, landingPath].includes(page.path) || projects.some(project => project.service === 'sistemas-web' && projectPath(project) === page.path) ? '<link rel="stylesheet" href="/assets/project-catalog.css?v=3">' : ''}
-  ${page.path === '/projetos/' ? '<link rel="stylesheet" href="/assets/projects-page.css">' : ''}
+  ${page.path === '/projetos/' ? '<link rel="stylesheet" href="/assets/projects-page.css?v=2">' : ''}
   ${page.script ? `<script src="${page.script}" defer></script>` : ''}
 </head>
 <body>
