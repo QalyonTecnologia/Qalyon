@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.11.0
+
+- Redesenha a página principal de Projetos com maquetes em perspectiva, navegação por categoria e vitrine de destaques.
+
 ## 2.10.3
 
 - Apresenta uma prévia de portfólio profissional na abertura do catálogo, com navegação e galeria de projetos.

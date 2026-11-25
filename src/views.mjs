@@ -436,22 +436,55 @@ const landingPage = catalogPage({
   filterLabel: 'Filtrar landing pages por objetivo',
 });
 
+const systemProjects = projects.filter(project => project.service === 'sistemas-web');
 const workIndex = [
-  ['Portfólios profissionais', portfolioDemos.flatMap(group => group.items)],
-  ['Sites institucionais', institutionalDemos.flatMap(group => group.items)],
-  ['Landing pages', landingDemos.flatMap(group => group.items)],
-  ['Sistemas web', projects.filter(project => project.service === 'sistemas-web')
-    .map(project => ({ title: project.title, url: projectPath(project) }))],
+  { name: 'Portfólios profissionais', href: portfolioPath, theme: 'portfolio', service: 'portfolio-profissional', items: portfolioDemos.flatMap(group => group.items) },
+  { name: 'Sites institucionais', href: institutionalPath, theme: 'institutional', service: 'sites-institucionais', items: institutionalDemos.flatMap(group => group.items) },
+  { name: 'Landing pages', href: landingPath, theme: 'landing', service: 'landing-pages', items: landingDemos.flatMap(group => group.items) },
+  { name: 'Sistemas web', href: '#sistemas-web', theme: 'systems', service: 'sistemas-web',
+    items: systemProjects.map(project => ({ title: project.title, url: projectPath(project) })) },
 ];
 
 const projectsPage = `
-${pageIntro('Nossos trabalhos', 'Projetos e demonstrações.',
-  'Explore exemplos autorais de sites, campanhas e sistemas. Cada demonstração apresenta um cenário fictício e escolhas de projeto.')}
-<section class="wrap section compact">${sectionTitle('Seleção de projetos', 'Veja os exemplos em contexto.')}${workGallery}</section>
-<section class="wrap section compact" id="indice-trabalhos"><h2>Todos os trabalhos</h2>
-  <div class="work-index">${workIndex.map(([name, items]) => `<div><h3>${escape(name)}</h3>
-    <ul>${items.map(item => `<li><a href="${escape(item.url)}">${escape(item.title)}</a></li>`).join('')}</ul></div>`).join('')}</div>
-</section>
+<div class="projects-overview">
+  <section class="projects-hero">
+    <div class="wrap projects-hero-layout">
+      <div class="projects-hero-copy">
+        ${heading('Nossos trabalhos', 'Projetos e demonstrações.',
+          'Explore portfólios, sites, campanhas e sistemas que mostram como a Qalyon aplica design e tecnologia a diferentes necessidades.')}
+        <div class="actions">
+          <a class="button" href="#categorias-projetos">Explorar categorias</a>
+          <a class="arrow-link" href="#destaques-projetos">Ver destaques</a>
+        </div>
+      </div>
+      <div class="projects-scene" aria-hidden="true">
+        <div class="projects-scene-orbit"></div>
+        <div class="projects-scene-floor"></div>
+        <div class="projects-device projects-device--site">${projectPreview({ service: 'sites-institucionais' })}</div>
+        <div class="projects-device projects-device--system">${projectPreview({ service: 'sistemas-web' })}</div>
+        <div class="projects-device projects-device--campaign">${projectPreview({ service: 'landing-pages' })}</div>
+      </div>
+    </div>
+  </section>
+  <section class="wrap section" id="categorias-projetos">
+    <h2>Explore por categoria</h2>
+    <nav class="projects-categories" aria-label="Categorias de projetos">
+      ${workIndex.map(({ name, href, theme, service, items }) => `<a class="projects-category projects-category--${theme}" href="${href}">
+        <div class="projects-category-preview">${projectPreview({ service })}</div>
+        <span class="projects-category-copy"><strong>${escape(name)}</strong>
+          <span>${items.length} ${items.length === 1 ? 'demonstração' : 'demonstrações'}</span></span>
+      </a>`).join('')}
+    </nav>
+  </section>
+  <section class="projects-featured" id="destaques-projetos">
+    <div class="wrap section"><h2>Projetos em destaque</h2>${workGallery}</div>
+  </section>
+  <section class="wrap section" id="indice-trabalhos">
+    <h2>Todos os trabalhos</h2>
+    <div class="work-index">${workIndex.map(({ name, items, theme }) => `<div id="${theme === 'systems' ? 'sistemas-web' : 'trabalhos-' + theme}"><h3>${escape(name)}</h3>
+      <ul>${items.map(item => `<li><a href="${escape(item.url)}">${escape(item.title)}</a></li>`).join('')}</ul></div>`).join('')}</div>
+  </section>
+</div>
 ${close()}`;
 
 const projectPage = project => `
@@ -669,6 +702,7 @@ export function layout(page, origin, isPreview) {
   ${page.path.startsWith('/servicos/') && page.path !== '/servicos/' ? '<link rel="stylesheet" href="/assets/services-page.css?v=2"><link rel="stylesheet" href="/assets/service-detail.css">' : ''}
   ${page.path === '/sobre/' ? '<link rel="stylesheet" href="/assets/about-page.css">' : ''}
   ${[portfolioPath, institutionalPath, landingPath].includes(page.path) || projects.some(project => project.service === 'sistemas-web' && projectPath(project) === page.path) ? '<link rel="stylesheet" href="/assets/project-catalog.css?v=3">' : ''}
+  ${page.path === '/projetos/' ? '<link rel="stylesheet" href="/assets/projects-page.css">' : ''}
   ${page.script ? `<script src="${page.script}" defer></script>` : ''}
 </head>
 <body>
