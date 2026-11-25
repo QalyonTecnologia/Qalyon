@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.13.2
+
+- Mantém o atalho de acessibilidade no rodapé.
+
 ## 2.13.1
 
 - Identifica o responsável pelo tratamento e informa o prazo de exclusão de orçamentos encerrados, os canais envolvidos e as finalidades de uso.

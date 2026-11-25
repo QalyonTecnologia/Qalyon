@@ -37,20 +37,6 @@ p { margin: 0; }
 .skip:focus { transform: none; }
 .header { border-bottom: 1px solid var(--divider); }
 .header-inner { display: flex; gap: 25px; min-height: 88px; align-items: center; justify-content: space-between; }
-/* O atalho de acessibilidade aparece no cabeçalho de todas as páginas. */
-.header-actions { display: flex; flex: 0 1 auto; flex-wrap: wrap; align-items: center; gap: 8px; }
-.header-accessibility {
-  display: inline-grid;
-  place-items: center;
-  flex: 0 0 44px;
-  min-height: 44px;
-  border: 1px solid #82917b;
-  border-radius: 8px;
-  color: var(--q-lime-soft);
-  background: #202c24;
-}
-.header-accessibility:is(:hover, [aria-current]) { color: var(--q-night); background: var(--q-lime-soft); }
-.header-accessibility svg { width: 24px; height: 24px; stroke-width: 2.3; }
 .brand { width: 170px; flex-shrink: 0; }
 .brand img { width: 100%; height: auto; }
 nav { display: flex; flex-wrap: wrap; align-items: center; gap: clamp(10px, 2.5vw, 32px); }
@@ -195,7 +181,6 @@ form button { margin-top: 16px; }
 }
 @media (max-width: 370px) {
   .header-inner { column-gap: 8px; }
-  .header-actions { gap: 6px; }
   .header .brand { width: 105px; }
   .header-inner nav { gap: 0 5px; }
 }

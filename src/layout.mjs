@@ -24,7 +24,7 @@ export function layout(page, origin, isPreview) {
   <meta property="og:image" content="${socialImage}"><meta property="og:image:alt" content="Logotipo Qalyon Tecnologia">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-symbol.png"><link rel="stylesheet" href="/assets/tokens.css">
-  <link rel="stylesheet" href="/assets/styles.css?v=3">
+  <link rel="stylesheet" href="/assets/styles.css?v=4">
   ${(page.styles ?? []).map(file => `<link rel="stylesheet" href="/assets/${file}">`).join('\n  ')}
   <script type="module" src="/assets/motion.js"></script>
   ${(page.modules ?? []).map(file => `<script type="module" src="/assets/${file}"></script>`).join('\n  ')}
@@ -35,10 +35,7 @@ export function layout(page, origin, isPreview) {
 <header class="header"><div class="wrap header-inner">${logo}
 <nav aria-label="Navegação principal">${site.navigation.map(([path, label]) =>
   `<a href="${path}"${active(path)}>${label}</a>`).join('')}</nav>
-<div class="header-actions">
-  <a class="header-accessibility" href="/acessibilidade/" aria-label="Acessibilidade"${active('/acessibilidade/')}>${accessibilityIcon}</a>
-  <a class="button header-cta" href="/contato/">Solicitar orçamento</a>
-</div></div></header>
+<a class="button header-cta" href="/contato/">Solicitar orçamento</a></div></header>
 <main id="conteudo" tabindex="-1">${page.body}</main>
 <footer class="footer"><div class="wrap footer-inner">
   <div class="footer-brand">${logo}<p>${site.slogan}</p></div>

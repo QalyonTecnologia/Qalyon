@@ -23,7 +23,7 @@ export const privacyPage = informationPage('Privacidade', 'Aviso de privacidade'
 
 export const accessibilityPage = informationPage('Acessibilidade', 'Acessibilidade do site',
   'Use os recursos de navegação e movimento do site ou fale com a Qalyon se encontrar uma barreira.', [
-    ['Navegação por teclado', '<p>Use Tab para avançar entre controles, Shift + Tab para voltar e Enter para ativar links. No início de cada página, o link “Pular para o conteúdo” leva ao conteúdo principal. O atalho de acessibilidade fica no cabeçalho. No briefing, use Escape para fechar a revisão e voltar aos campos.</p>'],
+    ['Navegação por teclado', '<p>Use Tab para avançar entre controles, Shift + Tab para voltar e Enter para ativar links. No início de cada página, o link “Pular para o conteúdo” leva ao conteúdo principal. O atalho de acessibilidade fica no rodapé. No briefing, use Escape para fechar a revisão e voltar aos campos.</p>'],
     ['Texto e movimento', '<p>Você pode ajustar o zoom pelo navegador. O site respeita a preferência de movimento reduzido do dispositivo e oferece o controle “Pausar movimento”.</p>'],
     ['Relate uma dificuldade', `<p>Envie a página em que encontrou a barreira e, se puder, informe o dispositivo, navegador e tecnologia assistiva usados. <a href="mailto:${escape(contact.email)}?subject=Acessibilidade%20Qalyon">Falar sobre acessibilidade</a>.</p>`],
   ]);
