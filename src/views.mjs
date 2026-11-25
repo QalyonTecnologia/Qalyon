@@ -342,30 +342,58 @@ const catalogIcons = {
   'personal-trainer': 'M4 20v8m6-13v18m6-22v26m0-13h16m0-13v26m6-22v18m6-13v8',
 };
 
-const catalogPage = ({ title, description, heading, groups, filterLabel }) => `
-${pageIntro('Nossos trabalhos', title, description, link('/projetos/', 'Voltar à seleção de projetos'))}
-<section class="tinted" id="portfolios-demonstrativos" data-project-catalog><div class="wrap section compact">
-  <h2>${heading}</h2>
-  <div class="portfolio-index" role="group" aria-label="${filterLabel}" hidden>
-    <button type="button" data-portfolio-filter="todos" aria-pressed="true">${icon(catalogIcons.todos)} Todos</button>
-    ${groups.map(group =>
-      `<button type="button" data-portfolio-filter="${group.slug}" aria-pressed="false">${icon(catalogIcons[group.slug])} ${group.title}</button>`).join('')}
+const catalogArtwork = kind => `<div class="catalog-art" aria-hidden="true">
+  <div class="catalog-orbit"></div>
+  <div class="catalog-floor"></div>
+  <div class="catalog-art-stack">
+    ${kind === 'portfolio' ? `<div class="catalog-screen catalog-screen--back"></div>
+      <div class="catalog-screen catalog-screen--photo"><img src="/assets/work-lia.webp" width="1440" height="960" alt=""></div>
+      <div class="catalog-float">${icon(catalogIcons['personal-trainer'])}<span>Lia Prado</span></div>`
+    : kind === 'institutional' ? `<div class="catalog-screen catalog-screen--browser"><i></i><img src="/assets/almeida-torres.webp" width="600" height="343" alt=""></div>
+      <div class="catalog-float catalog-float--phone"><span>Almeida<br>Torres</span><i></i><i></i></div>`
+    : `<div class="catalog-screen catalog-screen--campaign"><div class="catalog-campaign-rings"></div><b>Da oferta<br>à ação.</b></div>
+      <div class="catalog-float catalog-float--goals">${icon(catalogIcons.pedidos)}${icon(catalogIcons.agendamentos)}${icon(catalogIcons.orcamentos)}</div>`}
   </div>
-  ${groups.map(group => `
-  <section class="portfolio-group" data-portfolio-area="${group.slug}" id="portfolio-${group.slug}" aria-labelledby="portfolio-title-${group.slug}">
-    <h3 id="portfolio-title-${group.slug}">${icon(catalogIcons[group.slug])} ${group.title}</h3>
-    <ul class="portfolio-grid">${group.items.map(demo => `
-      <li class="card portfolio-card">
-        <p class="label">Demonstração</p>
-        <h4>${escape(demo.title)}</h4><p>${escape(demo.summary)}</p>
-        <a class="showcase-link" href="${escape(demo.url)}" aria-label="Abrir demonstração de ${escape(demo.title)}">
-          Abrir demonstração <span aria-hidden="true">↗</span>
-        </a>
-      </li>`).join('')}</ul>
-  </section>`).join('')}
-</div></section>`;
+</div>`;
+
+const catalogPage = ({ kind, title, description, heading: catalogHeading, groups, filterLabel }) => `
+<div class="project-catalog project-catalog--${kind}">
+  <section class="catalog-hero">
+    <div class="wrap">
+      <a class="catalog-back" href="/projetos/">Todos os projetos</a>
+      <div class="catalog-hero-layout">
+        <div class="catalog-hero-copy">
+          ${heading('Nossos trabalhos', title, description)}
+          <a class="button" href="#portfolios-demonstrativos">Explorar demonstrações</a>
+        </div>
+        ${catalogArtwork(kind)}
+      </div>
+    </div>
+  </section>
+  <section class="wrap section" id="portfolios-demonstrativos" data-project-catalog>
+    <h2>${catalogHeading}</h2>
+    <div class="portfolio-index" role="group" aria-label="${filterLabel}" hidden>
+      <button type="button" data-portfolio-filter="todos" aria-pressed="true">${icon(catalogIcons.todos)} Todos</button>
+      ${groups.map(group => `<button type="button" data-portfolio-filter="${group.slug}" aria-pressed="false">${icon(catalogIcons[group.slug])} ${escape(group.title)}</button>`).join('')}
+    </div>
+    ${groups.map(group => `
+    <section class="portfolio-group catalog-area--${group.slug}" data-portfolio-area="${group.slug}" id="portfolio-${group.slug}" aria-labelledby="portfolio-title-${group.slug}">
+      <h3 id="portfolio-title-${group.slug}">${icon(catalogIcons[group.slug])} ${escape(group.title)}</h3>
+      <ul class="portfolio-grid">${group.items.map(demo => `
+        <li class="portfolio-card">
+          <div class="catalog-card-art" aria-hidden="true">${icon(catalogIcons[group.slug])}</div>
+          <div class="catalog-card-copy">
+            <h4>${escape(demo.title)}</h4>
+            <p>${escape(demo.summary)}</p>
+            <a class="showcase-link" href="${escape(demo.url)}" aria-label="Abrir demonstração de ${escape(demo.title)}">Abrir demonstração</a>
+          </div>
+        </li>`).join('')}</ul>
+    </section>`).join('')}
+  </section>
+</div>`;
 
 const portfolioPage = catalogPage({
+  kind: 'portfolio',
   title: 'Portfólios profissionais.',
   description: 'Explore perfis fictícios com layouts e abordagens diferentes. Os links abrem as prévias privadas de cada site.',
   heading: 'Explore os portfólios por área.',
@@ -374,6 +402,7 @@ const portfolioPage = catalogPage({
 });
 
 const institutionalPage = catalogPage({
+  kind: 'institutional',
   title: 'Sites institucionais.',
   description: 'Conheça sites demonstrativos de empresas e organizações fictícias. Os links abrem as prévias privadas de cada site.',
   heading: 'Explore os sites por área.',
@@ -382,6 +411,7 @@ const institutionalPage = catalogPage({
 });
 
 const landingPage = catalogPage({
+  kind: 'landing',
   title: 'Landing pages para campanhas e ofertas.',
   description: 'Três campanhas fictícias com objetivos comerciais diferentes. Os links abrem as prévias privadas de cada página.',
   heading: 'Explore as campanhas por objetivo.',
@@ -414,6 +444,30 @@ ${pageIntro('Nossos trabalhos / ' + project.kind, project.title, project.summary
   <div><h2>${project.exampleTitle}</h2><p>${project.exampleText}</p></div>${projectPreview(project)}</div>
   <ol class="demo-items">${project.sections.map(item => `<li>${item}</li>`).join('')}</ol></div>
   <div class="actions">${project.demoUrl ? link(project.demoUrl, 'Abrir site demonstrativo (prévia privada)') : ''}${link('/projetos/', 'Voltar aos trabalhos')}${quote(project.service)}</div></section>`;
+
+const systemProjectPage = project => `
+<div class="project-catalog project-catalog--system">
+  <section class="catalog-hero">
+    <div class="wrap">
+      <a class="catalog-back" href="/projetos/">Todos os projetos</a>
+      <div class="catalog-hero-layout">
+        <div class="catalog-hero-copy">
+          ${heading('Demonstração de sistema web', escape(project.title), escape(project.summary))}
+          <a class="button" href="/contato/?servico=${encodeURIComponent(project.service)}">Solicitar orçamento</a>
+        </div>
+        <div class="catalog-art" aria-hidden="true">
+          <div class="catalog-orbit"></div>
+          <div class="catalog-floor"></div>
+          <div class="catalog-art-stack catalog-art-stack--system">${projectPreview(project)}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="wrap section catalog-system-detail">
+    <div><h2>${escape(project.exampleTitle)}</h2><p class="lead">${escape(project.exampleText)}</p></div>
+    <ol class="catalog-system-flow">${project.sections.map(item => `<li>${escape(item)}</li>`).join('')}</ol>
+  </section>
+</div>`;
 
 const aboutPage = `
 <section class="about-hero">
@@ -565,7 +619,7 @@ export const pages = [
   { path: portfolioPath, title: 'Portfólios profissionais — Nossos trabalhos', description: 'Explore demonstrações de portfólios profissionais em Advocacia, Psicologia, Nutrição, Fisioterapia e Personal Trainer.', body: portfolioPage, script: '/assets/portfolio-filter.js' },
   { path: institutionalPath, title: 'Sites institucionais — Nossos trabalhos', description: 'Explore sites institucionais demonstrativos por área de atuação.', body: institutionalPage, script: '/assets/portfolio-filter.js' },
   { path: landingPath, title: 'Landing pages — Nossos trabalhos', description: 'Explore landing pages demonstrativas para gerar pedidos, agendamentos e solicitações de orçamento.', body: landingPage, script: '/assets/portfolio-filter.js' },
-  ...projects.map(project => ({ path: projectPath(project), title: project.title + ' — Demonstração Qalyon', description: project.summary, body: projectPage(project) })),
+  ...projects.map(project => ({ path: projectPath(project), title: project.title + ' — Demonstração Qalyon', description: project.summary, body: project.service === 'sistemas-web' ? systemProjectPage(project) : projectPage(project) })),
   { path: '/sobre/', title: 'Sobre a Qalyon — Software house', description: 'Entenda como a Qalyon cria produtos SaaS e desenvolve soluções digitais sob medida.', body: aboutPage },
   { path: '/contato/', title: 'Solicitar orçamento — Qalyon', description: 'Prepare um briefing para seu projeto digital ou consulte o canal de atendimento da Qalyon.', body: contactPage, script: '/assets/contact.js' },
   { path: '/privacidade/', title: 'Aviso de privacidade — Qalyon', description: 'Entenda o tratamento de dados adotado na versão restrita do site da Qalyon.', body: privacyPage },
@@ -597,6 +651,7 @@ export function layout(page, origin, isPreview) {
   ${page.path === '/servicos/' ? '<link rel="stylesheet" href="/assets/services-page.css?v=2">' : ''}
   ${page.path.startsWith('/servicos/') && page.path !== '/servicos/' ? '<link rel="stylesheet" href="/assets/services-page.css?v=2"><link rel="stylesheet" href="/assets/service-detail.css">' : ''}
   ${page.path === '/sobre/' ? '<link rel="stylesheet" href="/assets/about-page.css">' : ''}
+  ${[portfolioPath, institutionalPath, landingPath].includes(page.path) || projects.some(project => project.service === 'sistemas-web' && projectPath(project) === page.path) ? '<link rel="stylesheet" href="/assets/project-catalog.css">' : ''}
   ${page.script ? `<script src="${page.script}" defer></script>` : ''}
 </head>
 <body>

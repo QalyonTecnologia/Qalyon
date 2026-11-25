@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.10.0
+
+- Redesenha os catálogos de projetos e a demonstração de sistemas com aberturas 3D e navegação visual.
+
 ## 2.9.0
 
 - Redesenha a página Sobre com abertura 3D, apresentação das duas frentes da empresa e linha de trabalho.
