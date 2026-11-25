@@ -147,9 +147,7 @@
   box-shadow: inset 0 3px var(--stage-accent);
 }
 .work-controls button:focus-visible { z-index: 1; outline-offset: -4px; }
-.work-control-copy { display: grid; gap: 4px; line-height: 1.25; }
-.work-control-copy small { font-size: .8125rem; color: #b9c5c7; }
-.work-control-copy strong { font-size: .9375rem; overflow-wrap: anywhere; }
+.work-control-title { font-size: .9375rem; line-height: 1.25; overflow-wrap: anywhere; }
 .work-thumb {
   display: block;
   position: relative;

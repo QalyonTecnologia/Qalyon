@@ -66,7 +66,7 @@ export const workGallery = `<div class="work-gallery" data-work-gallery>
   <div class="work-controls" role="group" aria-label="Escolher projeto em destaque" hidden>
     ${works.map(work => `<button class="work-${work.key}" type="button" aria-controls="work-${work.key}" aria-pressed="false">
       <span class="work-thumb" aria-hidden="true"><span class="work-screen">${work.screen}</span></span>
-      <span class="work-control-copy"><small>${work.category}</small><strong>${work.name}</strong></span>
+      <strong class="work-control-title">${work.category}</strong>
     </button>`).join('')}
   </div>
 </div>`;

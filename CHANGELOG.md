@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.6.1
+
+- Simplifica as miniaturas da vitrine para exibir apenas o título de cada categoria ao lado da imagem.
+
 ## 2.6.0
 
 - Amplia o palco e exibe a prévia dos quatro projetos em miniaturas selecionáveis.
