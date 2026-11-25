@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.10.2
+
+- Mostra uma prévia de site na abertura do catálogo de sites institucionais.
+
 ## 2.10.1
 
 - Troca as imagens e legendas das aberturas de Portfólios e Sites institucionais por composições próprias de cada categoria.

@@ -349,8 +349,16 @@ const catalogArtwork = kind => `<div class="catalog-art" aria-hidden="true">
     ${kind === 'portfolio' ? `<div class="catalog-screen catalog-screen--back"></div>
       <div class="catalog-screen catalog-screen--photo"><img src="/assets/catalogo-portfolios.webp" width="768" height="480" alt=""></div>
       <div class="catalog-float">${icon(catalogIcons.todos)}<span>Seleção de trabalhos</span></div>`
-    : kind === 'institutional' ? `<div class="catalog-screen catalog-screen--browser"><i></i><img src="/assets/catalogo-sites.webp" width="768" height="480" alt=""></div>
-      <div class="catalog-float catalog-float--phone"><span>Sobre a empresa</span><i></i><i></i></div>`
+    : kind === 'institutional' ? `<div class="catalog-screen catalog-screen--browser">
+        <div class="catalog-site-toolbar"><i></i><i></i><i></i></div>
+        <div class="catalog-site-nav"><b>Norte Engenharia</b><span>Empresa</span><span>Soluções</span><span>Contato</span></div>
+        <div class="catalog-site-cover">
+          <div><b>Engenharia para<br>projetos reais.</b><span>Conheça nossas soluções</span></div>
+          <div class="catalog-site-geometry"></div>
+        </div>
+        <div class="catalog-site-sections"><span>Áreas de atuação</span><span>Projetos realizados</span></div>
+      </div>
+      <div class="catalog-float catalog-float--phone"><span>Áreas de atuação</span><i></i><i></i></div>`
     : `<div class="catalog-screen catalog-screen--campaign"><div class="catalog-campaign-rings"></div><b>Da oferta<br>à ação.</b></div>
       <div class="catalog-float catalog-float--goals">${icon(catalogIcons.pedidos)}${icon(catalogIcons.agendamentos)}${icon(catalogIcons.orcamentos)}</div>`}
   </div>
@@ -651,7 +659,7 @@ export function layout(page, origin, isPreview) {
   ${page.path === '/servicos/' ? '<link rel="stylesheet" href="/assets/services-page.css?v=2">' : ''}
   ${page.path.startsWith('/servicos/') && page.path !== '/servicos/' ? '<link rel="stylesheet" href="/assets/services-page.css?v=2"><link rel="stylesheet" href="/assets/service-detail.css">' : ''}
   ${page.path === '/sobre/' ? '<link rel="stylesheet" href="/assets/about-page.css">' : ''}
-  ${[portfolioPath, institutionalPath, landingPath].includes(page.path) || projects.some(project => project.service === 'sistemas-web' && projectPath(project) === page.path) ? '<link rel="stylesheet" href="/assets/project-catalog.css">' : ''}
+  ${[portfolioPath, institutionalPath, landingPath].includes(page.path) || projects.some(project => project.service === 'sistemas-web' && projectPath(project) === page.path) ? '<link rel="stylesheet" href="/assets/project-catalog.css?v=2">' : ''}
   ${page.script ? `<script src="${page.script}" defer></script>` : ''}
 </head>
 <body>
