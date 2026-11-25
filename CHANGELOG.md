@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.4.5
+
+- Reintroduz o subtítulo O projeto certo para o seu objetivo com a hierarquia de títulos do site.
+
 ## 2.4.4
 
 - Apresenta Serviços digitais com a mesma tipografia dos demais rótulos de seção.

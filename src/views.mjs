@@ -211,8 +211,8 @@ const ecosystemSolutions = [
 
 const ecosystemSection = `
 <section class="wrap section" id="ecossistema" data-ecosystem>
-  <h2 class="label">Serviços digitais</h2>
-  <p class="lead">Desenvolvimento para profissionais autônomos, pequenos negócios e equipes com necessidades próprias.</p>
+  ${sectionTitle('Serviços digitais', 'O projeto certo para o seu objetivo.',
+    'Desenvolvimento para profissionais autônomos, pequenos negócios e equipes com necessidades próprias.')}
   <div class="ecosystem ecosystem-stage" data-ecosystem-stage>
     <div class="ecosystem-controls" data-ecosystem-controls role="group" aria-label="Escolher solução" hidden>
       ${ecosystemSolutions.map((solution, index) => `<button type="button" aria-pressed="${index === 0}" aria-controls="ecosystem-panel-${index}">${escape(solution.label)}</button>`).join('')}
