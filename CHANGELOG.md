@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.8.0
+
+- Redesenha as quatro páginas de serviço com composições 3D, escopo organizado e acesso às demonstrações.
+
 ## 2.7.1
 
 - Equilibra as linhas do título de Serviços e adapta a tipografia à largura da coluna.

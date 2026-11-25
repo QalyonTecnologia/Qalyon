@@ -1,4 +1,4 @@
-import { servicesCatalog, servicesHeroArtwork } from './services-catalog.mjs';
+import { servicesCatalog, servicesHeroArtwork, serviceVisuals } from './services-catalog.mjs';
 import { workGallery } from './work-gallery.mjs';
 import { landingDemos } from './landing-demos.mjs';
 import { institutionalDemos } from './institutional-demos.mjs';
@@ -282,19 +282,46 @@ const servicesPage = `
   </div>
 </section>`;
 
-const servicePage = service => `
-${pageIntro('Serviços digitais', service.title, service.summary, quote(service.slug))}
-<section class="wrap section compact split">
-  <div class="body-copy"><h2>Para quem serve</h2><p>${service.audience}</p><h2>O que pode incluir</h2>
-  <ul class="feature-list">${service.includes.map(item => `<li>${item}</li>`).join('')}</ul>
-  <p>${service.extra}</p>
-  ${service.slug === 'sites-institucionais' ? '<p id="portfolio-profissional">Seu objetivo principal é apresentar trabalhos e especialidades? ' + link('/servicos/portfolio-profissional/', 'Conhecer portfólios profissionais') + '</p>' : ''}
-  ${service.slug === 'portfolio-profissional' ? link(portfolioPath, 'Ver portfólios demonstrativos') : ''}
-  </div>${picture(service.image)}</section>
-<section class="tinted"><div class="wrap section split">
-  <div>${sectionTitle('Orçamento', 'Vamos entender o que você precisa.')}</div>
-  <div class="body-copy"><p>Conte seu objetivo e o tipo de projeto. A contratação é avulsa e o preço é sob consulta. O domínio e a hospedagem ficam em sua titularidade.</p>${quote(service.slug)}
-  ${link('/servicos/', 'Voltar para serviços')}</div></div></section>`;
+const servicePage = service => {
+  const visual = serviceVisuals[service.slug];
+  return `
+<div class="service-detail service-tile--${service.slug}">
+  <section class="service-detail-hero">
+    <div class="wrap">
+      <a class="service-detail-back" href="/servicos/">Todos os serviços</a>
+      <div class="service-detail-intro">
+        <div class="service-detail-heading">
+          ${heading('Serviços digitais', escape(service.title), escape(service.summary))}
+          <div class="actions">
+            <a class="button" href="/contato/?servico=${encodeURIComponent(service.slug)}">Solicitar orçamento</a>
+            <a class="arrow-link" href="${visual.demo}">${visual.demoLabel}</a>
+          </div>
+        </div>
+        <div class="service-detail-art service-tile-art" aria-hidden="true">${visual.artwork}</div>
+      </div>
+    </div>
+  </section>
+  <section class="wrap section service-detail-scope">
+    <div class="service-detail-audience">
+      <h2>Para quem serve</h2>
+      <p>${escape(service.audience)}</p>
+      ${service.slug === 'sites-institucionais' ? '<p id="portfolio-profissional">Quer destacar trabalhos e especialidades? <a href="/servicos/portfolio-profissional/">Conheça os portfólios profissionais</a>.</p>' : ''}
+    </div>
+    <div class="service-detail-deliverables">
+      <h2>O que pode incluir</h2>
+      <ul>${service.includes.map(item => `<li>${escape(item)}</li>`).join('')}</ul>
+      <p>${escape(service.extra)}</p>
+    </div>
+  </section>
+  <section class="wrap service-detail-contact">
+    <div>
+      ${sectionTitle('Orçamento', 'Vamos entender o que você precisa.')}
+      <p>A contratação é avulsa e o preço é sob consulta. O domínio e a hospedagem ficam em sua titularidade.</p>
+    </div>
+    <a class="button" href="/contato/?servico=${encodeURIComponent(service.slug)}">Solicitar orçamento</a>
+  </section>
+</div>`;
+};
 
 const productsPage = `
 ${pageIntro('Produtos próprios', 'Produtos criados pela Qalyon.',
@@ -545,6 +572,7 @@ export function layout(page, origin, isPreview) {
   ${page.path === '/' ? '<script type="module" src="/assets/experience.js"></script><script type="module" src="/assets/ecosystem.js"></script>' : ''}
   ${['/', '/projetos/'].includes(page.path) ? '<link rel="stylesheet" href="/assets/work-gallery.css?v=4"><script type="module" src="/assets/work-gallery.js?v=3"></script>' : ''}
   ${page.path === '/servicos/' ? '<link rel="stylesheet" href="/assets/services-page.css?v=2">' : ''}
+  ${page.path.startsWith('/servicos/') && page.path !== '/servicos/' ? '<link rel="stylesheet" href="/assets/services-page.css?v=2"><link rel="stylesheet" href="/assets/service-detail.css">' : ''}
   ${page.script ? `<script src="${page.script}" defer></script>` : ''}
 </head>
 <body>
