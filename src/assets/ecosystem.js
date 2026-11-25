@@ -2,6 +2,7 @@ const section = document.querySelector('[data-ecosystem]');
 const controls = section.querySelector('[data-ecosystem-controls]');
 const buttons = [...controls.querySelectorAll('button')];
 const panels = buttons.map(button => document.getElementById(button.getAttribute('aria-controls')));
+const names = [...section.querySelectorAll('[data-ecosystem-name]')];
 const stage = section.querySelector('[data-ecosystem-stage]');
 const canvas = stage.querySelector('canvas');
 const root = document.documentElement;
@@ -46,6 +47,7 @@ function select(index) {
   buttons.forEach((button, position) => {
     button.setAttribute('aria-pressed', String(position === index));
     panels[position].hidden = position !== index;
+    names[position].hidden = position !== index;
   });
   sync();
 }

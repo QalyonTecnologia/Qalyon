@@ -192,6 +192,17 @@ const ecosystemSection = `
       <canvas width="800" height="600"></canvas>
     </div>
     <div class="ecosystem-info">
+      <div class="ecosystem-nameplate" aria-hidden="true">
+        ${ecosystemSolutions.map((solution, index) => {
+          const name = escape(solution.label);
+          return `<span class="ecosystem-name" data-ecosystem-name${index ? ' hidden' : ''}>
+            <span class="ecosystem-name-depth">${name}</span>
+            <span class="ecosystem-name-depth">${name}</span>
+            <span class="ecosystem-name-depth">${name}</span>
+            <span class="ecosystem-name-face">${name}</span>
+          </span>`;
+        }).join('')}
+      </div>
       <div class="ecosystem-controls" data-ecosystem-controls role="group" aria-label="Escolher solução" hidden>
         ${ecosystemSolutions.map((solution, index) => `<button type="button" aria-pressed="${index === 0}" aria-controls="ecosystem-panel-${index}">${escape(solution.label)}</button>`).join('')}
       </div>

@@ -1,4 +1,4 @@
-# Qalyon Institucional v2.2.0
+# Qalyon Institucional v2.3.0
 
 Site em português do Brasil, gerado em HTML estático com Node.js. A cena do Ecossistema Qalyon usa OGL e carrega ao se aproximar da área visível. O aplicativo Atlas tem ciclo de desenvolvimento separado. O catálogo institucional apresenta apenas a página pública do produto e seu estágio.
 
@@ -57,3 +57,7 @@ O tamanho em gzip local de HTML e CSS é medido por `npm run check`. Essa medida
 ## Movimento no site
 
 `src/assets/neural.js` desenha os hemisférios, conexões e pulsos luminosos em Canvas 2D. `src/assets/motion.js` controla as entradas na rolagem, o ciclo de desenho e a pausa. A home interrompe o desenho quando sai do campo de visão ou a aba fica oculta. A preferência por movimento reduzido exibe um quadro estático. A pausa escolhida pelo visitante vale nas páginas da mesma sessão.
+
+## Versionamento
+
+Cada atualização incrementa a versão em `package.json` e `package-lock.json` e registra as mudanças em `CHANGELOG.md`. Use o último número para correções, o número do meio para melhorias compatíveis e o primeiro número para mudanças incompatíveis. Cite a versão e descreva a mudança na mensagem do commit.
