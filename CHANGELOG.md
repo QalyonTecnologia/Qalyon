@@ -1,5 +1,10 @@
 # Histórico de versões
 
+## 2.13.1
+
+- Identifica o responsável pelo tratamento e informa o prazo de exclusão de orçamentos encerrados, os canais envolvidos e as finalidades de uso.
+- Dá destaque ao atalho de acessibilidade no cabeçalho de todas as páginas.
+
 ## 2.13.0
 
 - Alinha Produtos, Atlas e os detalhes de projetos ao padrão visual atual, com navegação e títulos responsivos.

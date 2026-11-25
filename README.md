@@ -1,4 +1,4 @@
-# Qalyon Institucional v2.13.0
+# Qalyon Institucional v2.13.1
 
 Site estático em português do Brasil, gerado com Node.js. O catálogo apresenta os serviços da Qalyon, suas demonstrações e o estágio do Atlas. As cenas da home usam Canvas e OGL, com recursos hospedados no próprio site.
 
@@ -53,7 +53,7 @@ O formulário monta e revisa o briefing localmente. O visitante escolhe copiar o
 
 A política de conteúdo limita scripts, estilos, imagens e fontes a arquivos locais, bloqueia submissão HTML e proíbe objetos incorporados. `src/security.mjs` é a fonte comum para o HTML e `dist/_headers`. A restrição de enquadramento e os demais cabeçalhos HTTP dependem da configuração efetiva do host. Nunca coloque segredos em `src/` ou `dist/`.
 
-O aviso usa o canal comercial atual para solicitações de privacidade. Antes do lançamento público, valide a identificação legal do responsável, as regras de retenção nos canais, o papel dos provedores e eventual transferência internacional. Se o site passar a ser meio de oferta ou contratação eletrônica de consumo, valide a identificação do fornecedor, condições, atendimento e direitos aplicáveis ao fluxo. Consulte a [LGPD](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709compilado.htm), a [Lei Brasileira de Inclusão](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm) e o [Decreto nº 7.962/2013](https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/decreto/d7962.htm).
+O aviso usa o canal comercial atual para solicitações de privacidade. Identificação, canais e retenção definidos para a operação atual constam no aviso. Confirme o papel dos provedores e os mecanismos de transferência internacional aplicáveis à conta em uso. Se o site passar a ser meio de oferta ou contratação eletrônica de consumo, valide a identificação do fornecedor, condições, atendimento e direitos aplicáveis ao fluxo. Consulte a [LGPD](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709compilado.htm), a [Lei Brasileira de Inclusão](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm) e o [Decreto nº 7.962/2013](https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/decreto/d7962.htm).
 
 ## Verificação e versionamento
 
