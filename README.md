@@ -1,23 +1,10 @@
-# Qalyon Institucional v2.12.1
+# Qalyon Institucional v2.13.0
 
-Site em português do Brasil, gerado em HTML estático com Node.js. A cena do Ecossistema Qalyon usa OGL e carrega ao se aproximar da área visível. O aplicativo Atlas tem ciclo de desenvolvimento separado. O catálogo institucional apresenta apenas a página pública do produto e seu estágio.
-
-## Estrutura
-
-| Caminho | Função |
-| --- | --- |
-| `src/content.mjs` | Configuração central, menu, contato, serviços, produtos, mostruário e fluxo de trabalho |
-| `src/views.mjs` | Layout, componentes de página, cartões, metadados e rotas |
-| `src/assets/tokens.css` | Tokens oficiais da paleta Precision v1.0.0 |
-| `src/assets/styles.css` | Tipografia e estilos dos componentes |
-| `src/assets/contact.js` | Pré-seleção do serviço e bloqueio de submissão na prévia |
-| `scripts/build.mjs` | Geração de HTML, sitemap, robots e configuração de cabeçalhos |
-| `scripts/check.mjs` | Verificação das páginas geradas e relatório de tamanhos |
-| `dist/` | Saída estática de publicação, regenerada a cada build |
+Site estático em português do Brasil, gerado com Node.js. O catálogo apresenta os serviços da Qalyon, suas demonstrações e o estágio do Atlas. As cenas da home usam Canvas e OGL, com recursos hospedados no próprio site.
 
 ## Rodar e editar
 
-Use Node.js 20 ou superior. Na raiz, rode:
+Use Node.js 24, a versão usada no GitHub Actions.
 
 ```sh
 npm ci
@@ -26,38 +13,50 @@ npm run check
 python3 -m http.server 8000 --directory dist
 ```
 
-Abra `http://localhost:8000/`. Refaça o build após editar conteúdo ou estilos. Em Sites, rode `sites-preview start <caminho-absoluto-do-projeto>` quando disponível.
+Abra `http://localhost:8000/`. Refaça o build depois de editar o código. O servidor local simples serve a saída estática e não aplica os cabeçalhos HTTP de `dist/_headers`.
 
-- **Serviço, SaaS ou projeto.** Adicione um objeto na coleção correspondente de `src/content.mjs`, com slug único e estável. As páginas de índice e detalhes são geradas a partir dessas coleções. Para um novo SaaS com estrutura diferente do Atlas, adapte o componente de produto em `src/views.mjs`. Para cases reais, use o tipo e os textos correspondentes e publique somente evidências autorizadas.
-- **Segmentos, editorial ou campanhas.** Adicione coleção e componente próprios quando houver conteúdo. Registre a rota em `pages`. A navegação principal é editada separadamente em `site.navigation`.
-- **Imagens.** Salve as variantes WebP de 640 e 1280 px em `src/assets/` e registre o texto alternativo em `media`. O loop arquitetônico aparece na página Sobre. O topo da home combina texto e links com uma rede neural desenhada em Canvas ao fundo. Os dispositivos e os módulos ilustram serviços e amostras.
-- **Identidade.** Logotipo oficial raster Precision v1.5.0 reaproveitado com o lettering original. A vetorização oficial permanece pendente. Inter Display usa o eixo óptico de display da fonte Inter variável. Inter e PT Mono são hospedadas localmente com licenças incluídas. O slogan corresponde à versão aprovada v1.0.0.
+| Quero mudar | Onde editar |
+| --- | --- |
+| Marca, menu, contatos, serviços e produtos | `src/content.mjs` |
+| Registrar uma rota, título, descrição ou arquivos específicos | `src/views.mjs` |
+| Cabeçalho, rodapé e metadados comuns | `src/layout.mjs` |
+| Componentes HTML reutilizados pelas páginas | `src/components.mjs` |
+| Home, Serviços, Produtos, Projetos, Sobre ou Contato | Arquivo da área em `src/pages/` |
+| Privacidade, acessibilidade e informações de uso | `src/pages/information.mjs` |
+| Conteúdo de catálogos e maquetes | `src/*-demos.mjs`, `src/services-catalog.mjs`, `src/work-gallery.mjs` |
+| Paleta, layout global e estilo de cada página | `src/assets/tokens.css`, `src/assets/styles.css` e o CSS da rota |
+| Formulário, filtros, movimento e cenas | `src/assets/*.js` e `src/scenes/` |
+| Política de segurança, geração e validações | `src/security.mjs` e `scripts/` |
 
-## Prévia e publicação
+Use slugs estáveis para serviços e demonstrações. Atualize o menu somente se a rota precisar aparecer na navegação principal. Para imagens novas, prefira WebP e defina dimensões para evitar saltos de layout. Descreva imagens informativas no atributo `alt` e deixe o `alt` vazio para as decorativas.
 
-O build padrão gera `noindex,nofollow` e bloqueia rastreio em `robots.txt`. O controle de acesso é aplicado em Sites, separado do controle de indexação. Para a prévia, mantenha a política privada e publique o conteúdo de `dist/` no projeto existente. O endereço antigo `/privacidade.html` oferece um link para a rota atual.
+## Prévia, produção e SEO
 
-Para preparar os arquivos de produção após a aprovação de lançamento, configure `QALYON_PUBLIC_BUILD=1` e `QALYON_SITE_ORIGIN` com a origem HTTPS do domínio oficial, sem barra final. Rode o build e o check com as mesmas variáveis. O build gera canônicas, URLs sociais e sitemap no domínio confirmado. Esse comando prepara somente os arquivos, sem alterar o acesso em Sites, DNS ou domínio. Verifique HTTPS, rotas, redirects e cabeçalhos no host final antes de abrir ao público. A política em `_headers` depende do suporte do provedor. A política CSP em HTML é uma camada adicional.
+O build padrão é de prévia. As páginas emitem `noindex,nofollow`, a prévia não publica sitemap e o `robots.txt` bloqueia o rastreio. No Sites, o acesso exige autenticação pela configuração do projeto.
 
-## Dependências de lançamento
+Quando o domínio oficial e a abertura pública estiverem definidos, gere a saída para esse domínio:
 
-1. Para trocar os canais comerciais, atualizar `contact.whatsappBusiness` em formato internacional e `contact.email` em `src/content.mjs`.
-2. O formulário prepara um briefing local para revisão e cópia. A página oferece conversa direta e abre o briefing no WhatsApp ou como rascunho no aplicativo de e-mail. Para recebimento direto pelo site, integrar um serviço de envio e implementar validação no servidor, proteção contra abuso e acesso restrito aos contatos.
-3. Atualizar o aviso de privacidade conforme o fluxo real, com identificação do responsável, canal de privacidade, finalidade, acesso e retenção.
-4. Confirmar domínio, política de acesso e ambiente de produção. Medir Core Web Vitals de campo quando o domínio tiver tráfego suficiente. A URL do Atlas só deve ser inserida quando houver um destino que corresponda ao recurso oferecido.
-5. Substituir o raster apenas quando houver versão vetorial oficial aprovada.
+```sh
+export QALYON_PUBLIC_BUILD=1
+export QALYON_SITE_ORIGIN=https://seu-dominio-confirmado.example
+npm run build
+npm run check
+```
 
-## Verificação
+O build de produção emite URLs canônicas, metadados sociais e sitemap do domínio informado. Essas variáveis não alteram o acesso do projeto, DNS ou o estado de publicação. No host definitivo, verifique a resposta HTTP de páginas válidas e inexistentes, os cabeçalhos efetivamente servidos e a disponibilidade do sitemap antes de enviá-lo aos buscadores.
 
-Build e checagem das 18 rotas, dos títulos, referências locais, imagens, labels e indexação. Revisão no Chrome desktop e em molduras de 320 e 390 px. Fluxo de navegação Serviço → Solicitar orçamento → serviço pré-selecionado → Privacidade. O formulário revisa os dados antes do compartilhamento.
+Regere `dist/` a partir do mesmo código que será versionado e publique pelo projeto existente. Verifique um link de serviço com briefing pré-selecionado e a rota de privacidade após publicar. Se uma alteração causar regressão, restaure a última versão estável no host e corrija o código em um novo commit.
 
-O tamanho em gzip local de HTML e CSS é medido por `npm run check`. Essa medida representa compressão de arquivos em laboratório e não o tempo de carregamento nem os Core Web Vitals de usuários. A home carrega um script curto para controlar a rede neural e as animações. O formulário carrega seu próprio script de pré-seleção, validação e revisão do briefing. O envio de leads depende de integração real.
+## Briefing, privacidade e segurança
 
+O formulário monta e revisa o briefing localmente. O visitante escolhe copiar o texto, abrir o WhatsApp ou abrir o aplicativo de e-mail. A aplicação não recebe o formulário nem usa rastreadores. A preferência de movimento é armazenada em `sessionStorage`. Para incluir envio direto, analytics ou outra integração, reveja os dados transmitidos, a base legal, o aviso de privacidade e a política de segurança antes de publicar.
 
-## Movimento no site
+A política de conteúdo limita scripts, estilos, imagens e fontes a arquivos locais, bloqueia submissão HTML e proíbe objetos incorporados. `src/security.mjs` é a fonte comum para o HTML e `dist/_headers`. A restrição de enquadramento e os demais cabeçalhos HTTP dependem da configuração efetiva do host. Nunca coloque segredos em `src/` ou `dist/`.
 
-`src/assets/neural.js` desenha os hemisférios, conexões e pulsos luminosos em Canvas 2D. `src/assets/motion.js` controla as entradas na rolagem, o ciclo de desenho e a pausa. A home interrompe o desenho quando sai do campo de visão ou a aba fica oculta. A preferência por movimento reduzido exibe um quadro estático. A pausa escolhida pelo visitante vale nas páginas da mesma sessão.
+O aviso usa o canal comercial atual para solicitações de privacidade. Antes do lançamento público, valide a identificação legal do responsável, as regras de retenção nos canais, o papel dos provedores e eventual transferência internacional. Se o site passar a ser meio de oferta ou contratação eletrônica de consumo, valide a identificação do fornecedor, condições, atendimento e direitos aplicáveis ao fluxo. Consulte a [LGPD](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709compilado.htm), a [Lei Brasileira de Inclusão](https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13146.htm) e o [Decreto nº 7.962/2013](https://www.planalto.gov.br/ccivil_03/_ato2011-2014/2013/decreto/d7962.htm).
 
-## Versionamento
+## Verificação e versionamento
 
-Cada atualização incrementa a versão em `package.json` e `package-lock.json` e registra as mudanças em `CHANGELOG.md`. Use o último número para correções, o número do meio para melhorias compatíveis e o primeiro número para mudanças incompatíveis. Cite a versão e descreva a mudança na mensagem do commit. Registre no GitHub as alterações publicadas no site institucional.
+Execute `npm run check` em cada modo de build. Ele verifica caminhos, âncoras, IDs, imagens, rótulos, metadados, sitemap e a política de segurança gerada. A auditoria `npm audit` consulta avisos conhecidos das dependências. O GitHub Actions repete essas verificações com acesso de leitura, sem gravar credenciais do Git no checkout.
+
+No GitHub, confira a proteção de `master`, as permissões dos colaboradores e os recursos de alertas de dependências e de segredos disponíveis para a visibilidade do repositório. Essas configurações são administradas na plataforma. As alterações publicadas devem constar no `CHANGELOG.md`, em `package.json` e no lockfile com a mesma versão.

@@ -14,7 +14,7 @@
 .service-hero-copy h1 {
   max-width: none;
   font-size: clamp(1.5rem, 4.9vw, 4.75rem);
-  font-size: clamp(1.5rem, 11.4cqi, 4.75rem);
+  font-size: min(11.4cqi, 4.75rem);
   line-height: 1.04;
   overflow-wrap: normal;
   text-wrap: balance;
@@ -102,9 +102,9 @@
 .service-chart i { background: linear-gradient(#9ed1fa, #4e80b36b); }
 .service-dashboard-status { display: flex; align-items: center; gap: 7px; right: 10%; bottom: 15%; padding: 9px 12px; transform: rotateZ(-7deg); color: #174f52; background: #d3ebf7; font: 600 .76rem var(--mono); }
 .service-dashboard-status i { width: 6px; height: 6px; border-radius: 50%; background: #177566; }
-.service-tile-copy { padding: clamp(20px, 3vw, 32px); display: flex; flex-direction: column; align-items: flex-start; }
+.service-tile-copy { container-type: inline-size; min-width: 0; padding: clamp(20px, 3vw, 32px); display: flex; flex-direction: column; align-items: flex-start; }
 .service-tile-copy .label { color: var(--service-light); margin-bottom: 9px; }
-.service-tile-copy h3 { font-size: clamp(1.42rem, 2.35vw, 2rem); }
+.service-tile-copy h3 { font-size: min(clamp(1.42rem, 2.35vw, 2rem), 12.5cqi); }
 .service-tile-copy h3 + p { color: var(--q-text-secondary-dark); margin-block: 12px 15px; max-width: 46ch; }
 .service-tile-copy .arrow-link { margin-top: auto; min-height: 44px; }
 .service-tile:is(:hover, :focus-within) { border-color: var(--service-light); }
@@ -125,7 +125,7 @@
 }
 @media (max-width: 760px) {
   .service-hero-inner { grid-template-columns: minmax(0, 1fr); gap: 26px; padding-block: 52px 23px; }
-  .service-hero-copy h1 { font-size: clamp(1.5rem, 9vw, 2.25rem); font-size: clamp(1.5rem, 11.4cqi, 2.25rem); }
+  .service-hero-copy h1 { font-size: clamp(1.5rem, 9vw, 2.25rem); font-size: min(11.4cqi, 2.25rem); }
   .service-hero-art { min-height: 0; width: min(100%, 490px); justify-self: center; aspect-ratio: 1.52; }
 }
 @media (max-width: 600px) {

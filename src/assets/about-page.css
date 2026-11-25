@@ -2,6 +2,7 @@
   isolation: isolate;
   position: relative;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   align-items: center;
   overflow: hidden;
   min-height: clamp(470px, 55vw, 690px);
@@ -20,7 +21,7 @@
 .about-hero-copy { width: min(52%, 590px); container-type: inline-size; }
 .about-hero-copy h1 {
   font-size: clamp(2rem, 5vw, 5.2rem);
-  font-size: clamp(2rem, 14cqi, 5.2rem);
+  font-size: min(14cqi, 5.2rem);
   max-width: none;
   text-wrap: balance;
   overflow-wrap: normal;
@@ -68,7 +69,7 @@
 .about-process { border-block: 1px solid #344036; background: linear-gradient(125deg, #192520, #12191c 72%); }
 .about-process-list {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
   padding: 0;
   margin: 42px 0 0;
   list-style: none;
@@ -82,14 +83,14 @@
   .about-hero { min-height: 0; }
   .about-hero-inner { padding-block: 52px 0; }
   .about-hero-copy { width: min(100%, 480px); }
-  .about-hero-copy h1 { font-size: clamp(2rem, 9vw, 3.4rem); }
+  .about-hero-copy h1 { font-size: min(clamp(2rem, 9vw, 3.4rem), 14cqi); }
   .about-hero-art { position: relative; inset: auto; order: 1; height: clamp(200px, 56vw, 365px); }
   .about-hero-art::after { background: linear-gradient(180deg, #0d1216, transparent 28%); }
   .about-branches { grid-template-columns: minmax(0, 1fr); }
   .about-node { height: 76px; }
   .about-node::before { width: 1px; height: 100%; }
   .about-node-tilt { width: 49px; }
-  .about-process-list { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 23px; }
+  .about-process-list { row-gap: 23px; }
 }
 @media (max-width: 370px) {
   .about-process-list { grid-template-columns: minmax(0, 1fr); }

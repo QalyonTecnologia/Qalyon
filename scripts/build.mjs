@@ -3,7 +3,9 @@ import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { build } from 'esbuild';
 import { site } from '../src/content.mjs';
-import { pages, layout } from '../src/views.mjs';
+import { pages } from '../src/views.mjs';
+import { layout } from '../src/layout.mjs';
+import { securityHeaders } from '../src/security.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const dist = join(root, 'dist');
@@ -37,19 +39,27 @@ await writeFile(join(dist, 'privacidade.html'), layout({
   path: '/privacidade/',
   title: 'Privacidade — Endereço atualizado',
   description: 'O aviso de privacidade da Qalyon tem um novo endereço.',
-  body: '<section class="wrap page-intro"><h1>Aviso de privacidade</h1><p><a class="arrow-link" href="/privacidade/">Acessar o aviso atualizado ↗</a></p></section>',
+  styles: ['information-page.css'],
+  body: '<section class="information-hero"><div class="wrap"><h1>Aviso de privacidade</h1><p><a class="arrow-link" href="/privacidade/">Acessar o aviso atualizado</a></p></div></section>',
 }, origin, true));
 
-const sitemap = pages.map(page => `  <url><loc>${origin + page.path}</loc></url>`).join('\n');
-await writeFile(join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemap}\n</urlset>\n`);
+await writeFile(join(dist, '404.html'), layout({
+  path: '/404.html',
+  indexable: false,
+  title: 'Página não encontrada — Qalyon',
+  description: 'Encontre o caminho de volta para o site da Qalyon.',
+  styles: ['information-page.css'],
+  body: '<section class="information-hero"><div class="wrap"><h1>Página não encontrada</h1><p class="lead">O endereço pode ter mudado.</p><div class="actions"><a class="button" href="/">Voltar ao início</a><a class="arrow-link" href="/contato/">Falar com a Qalyon</a></div></div></section>',
+}, origin, isPreview));
+
+if (!isPreview) {
+  const sitemap = pages.filter(page => page.indexable !== false)
+    .map(page => `  <url><loc>${origin + page.path}</loc></url>`).join('\n');
+  await writeFile(join(dist, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemap}\n</urlset>\n`);
+}
 await writeFile(join(dist, 'robots.txt'), isPreview ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\nSitemap: ${origin}/sitemap.xml\n`);
-await writeFile(join(dist, '_headers'), `/*
-  X-Content-Type-Options: nosniff
-  Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
-  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'self' https://chatgpt.com https://*.chatgpt.com
-${isPreview ? '  X-Robots-Tag: noindex, nofollow\n' : ''}
-/assets/*
-  Cache-Control: public, max-age=86400
-`);
+
+const headers = isPreview ? { ...securityHeaders, 'X-Robots-Tag': 'noindex, nofollow' } : securityHeaders;
+const rules = Object.entries(headers).map(([name, value]) => `  ${name}: ${value}`).join('\n');
+await writeFile(join(dist, '_headers'), `/*\n${rules}\n/assets/*\n  Cache-Control: public, max-age=86400\n`);
 console.log(`${pages.length} páginas geradas (${isPreview ? 'prévia' : 'produção'}).`);

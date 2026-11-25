@@ -28,15 +28,15 @@ function validate() {
   const reply = form.elements.reply;
   const goal = form.elements.goal;
   const contact = reply.value.trim();
-  const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact);
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact);
   const phone = /^\+?[\d\s().-]+$/.test(contact) && /^\d{10,15}$/.test(contact.replace(/\D/g, ''));
   name.setCustomValidity(name.value.trim() ? '' : 'Informe seu nome.');
-  reply.setCustomValidity(email || phone ? '' : 'Informe um e-mail válido ou um telefone com DDD.');
+  reply.setCustomValidity(isEmail || phone ? '' : 'Informe um e-mail válido ou um telefone com DDD.');
   goal.setCustomValidity(goal.value.trim().length >= 10 ? '' : 'Descreva seu objetivo em pelo menos 10 caracteres.');
   return form.reportValidity();
 }
 
-form.addEventListener('input', ({ target }) => target.setCustomValidity(''));
+form.addEventListener('input', ({ target }) => target.setCustomValidity?.(''));
 form.addEventListener('submit', event => {
   event.preventDefault();
   if (!validate()) return;
@@ -55,7 +55,9 @@ form.addEventListener('submit', event => {
     send.href = url.href;
   }
   const subject = encodeURIComponent('Solicitação de orçamento — Qalyon');
-  const body = encodeURIComponent(summary.value.replace(/\n/g, '\r\n'));
+  const text = summary.value.replace(/\n/g, '\r\n');
+  const wellFormedText = new TextDecoder().decode(new TextEncoder().encode(text));
+  const body = encodeURIComponent(wellFormedText);
   email.href = form.dataset.emailUrl + '?subject=' + subject + '&body=' + body;
   dialog.showModal();
 });

@@ -14,7 +14,7 @@
 .quote-hero-copy h1 {
   max-width: none;
   font-size: clamp(2rem, 6vw, 5.15rem);
-  font-size: clamp(2rem, 14cqi, 5.15rem);
+  font-size: min(14cqi, 5.15rem);
   overflow-wrap: normal;
   text-wrap: balance;
 }
@@ -129,6 +129,6 @@
 }
 @media (max-width: 680px) {
   .quote-hero-layout { grid-template-columns: minmax(0, 1fr); padding-block: 43px 29px; }
-  .quote-hero-copy h1 { font-size: clamp(2rem, 8.7vw, 3.4rem); }
+  .quote-hero-copy h1 { font-size: min(clamp(2rem, 8.7vw, 3.4rem), 14cqi); }
   .quote-hero-art { width: min(100%, 435px); justify-self: center; }
 }

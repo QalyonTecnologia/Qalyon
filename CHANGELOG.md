@@ -1,5 +1,12 @@
 # Histórico de versões
 
+## 2.13.0
+
+- Alinha Produtos, Atlas e os detalhes de projetos ao padrão visual atual, com navegação e títulos responsivos.
+- Atualiza o aviso de privacidade e publica as páginas de acessibilidade e informações de uso.
+- Organiza os templates por área, centraliza a política de segurança e fortalece as validações de links e indexação.
+- Adiciona verificações automatizadas dos builds de prévia e produção e auditoria de dependências no GitHub.
+
 ## 2.12.1
 
 - Suaviza o verde do card de atendimento na página de Contato.

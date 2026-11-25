@@ -1,3 +1,12 @@
 dist/
 
 node_modules/
+
+# Configuração local e credenciais que ficam fora do Git.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx

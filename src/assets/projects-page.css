@@ -14,7 +14,7 @@
 .projects-hero-copy h1 {
   max-width: none;
   font-size: clamp(1.875rem, 5vw, 4.9rem);
-  font-size: clamp(1.875rem, 12.5cqi, 4.9rem);
+  font-size: min(12.5cqi, 4.9rem);
   overflow-wrap: normal;
   text-wrap: balance;
 }
@@ -59,7 +59,8 @@
 .projects-categories { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 30px; }
 .projects-category {
   display: grid;
-  grid-template-rows: auto 1fr;
+  min-width: 0;
+  grid-template: auto 1fr / minmax(0, 1fr);
   border: 1px solid #3a474d;
   border-radius: 13px;
   background: #151d22;
@@ -112,7 +113,8 @@
   color: var(--category-edge);
 }
 .projects-index-icon svg { width: 29px; height: 29px; }
-.projects-index-heading h3 { font-size: clamp(1.125rem, 2.2vw, 1.7rem); }
+.projects-index-heading > div { flex: 1; min-width: 0; container-type: inline-size; }
+.projects-index-heading h3 { font-size: min(clamp(1.125rem, 2.2vw, 1.7rem), 13cqi); }
 .projects-index-heading p { margin-top: 7px; color: var(--category-edge); font-size: .875rem; }
 .projects-index-panel ul { display: grid; gap: 6px; margin: 0; padding: 14px; list-style: none; }
 .projects-index-panel.projects-category--portfolio ul { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -150,11 +152,11 @@
 }
 @media (max-width: 720px) {
   .projects-hero-layout { grid-template-columns: minmax(0, 1fr); padding-block: 46px 32px; }
-  .projects-hero-copy h1 { font-size: clamp(1.875rem, 9vw, 3.25rem); }
+  .projects-hero-copy h1 { font-size: min(clamp(1.875rem, 9vw, 3.25rem), 12.5cqi); }
   .projects-scene { width: min(100%, 525px); justify-self: center; }
 }
 @media (max-width: 400px) {
-  .projects-categories { gap: 10px; }
+  .projects-categories { grid-template-columns: minmax(0, 1fr); gap: 10px; }
   .projects-category-copy { padding: 13px 10px; }
 }
 

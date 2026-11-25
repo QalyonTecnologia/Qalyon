@@ -13,7 +13,7 @@
 .catalog-hero-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: center; gap: clamp(24px, 4vw, 60px); margin-top: 23px; }
 .catalog-hero-copy { container-type: inline-size; }
 .catalog-hero-copy .label { color: var(--catalog-light); }
-.catalog-hero-copy h1 { max-width: none; font-size: clamp(1.875rem, 5vw, 4.75rem); font-size: clamp(1.875rem, 13cqi, 4.75rem); overflow-wrap: normal; text-wrap: balance; }
+.catalog-hero-copy h1 { max-width: none; font-size: clamp(1.875rem, 5vw, 4.75rem); font-size: min(13cqi, 4.75rem); overflow-wrap: normal; text-wrap: balance; }
 .catalog-hero-copy .lead { max-width: 43ch; }
 .catalog-hero-copy .button { margin-top: 24px; background: var(--q-lime); color: #0e1317; }
 .catalog-hero-copy .button:hover { background: var(--q-lime-soft); }
@@ -86,16 +86,23 @@
 .project-catalog:is(.project-catalog--institutional,.project-catalog--landing) .portfolio-grid { grid-template-columns: minmax(0, 1fr); }
 .project-catalog:is(.project-catalog--institutional,.project-catalog--landing) .portfolio-card { display: grid; grid-template-columns: minmax(0, .6fr) minmax(0, 1.4fr); }
 .project-catalog:is(.project-catalog--institutional,.project-catalog--landing) .catalog-card-art { border-bottom: 0; border-right: 1px solid #39474b; }
-.catalog-system-detail { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+.catalog-system-detail { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; }
 .catalog-system-flow { margin: 0; padding: 0; list-style: none; }
 .catalog-system-flow li { padding: 15px 20px; border-left: 2px solid var(--catalog-light); background: #17232d; }
 .catalog-system-flow li + li { margin-top: 8px; }
 @media (max-width: 760px) {
-  .catalog-hero-layout, .catalog-system-detail { grid-template-columns: 1fr; }
-  .catalog-hero-copy h1 { font-size: clamp(1.875rem, 8.5vw, 3.5rem); }
+  .catalog-hero-layout, .catalog-system-detail { grid-template-columns: minmax(0, 1fr); }
+  .catalog-hero-copy h1 { font-size: min(clamp(1.875rem, 8.5vw, 3.5rem), 13cqi); }
   .catalog-art { width: min(100%, 540px); justify-self: center; }
 }
 @media (max-width: 480px) {
   .project-catalog:is(.project-catalog--institutional,.project-catalog--landing) .portfolio-card { grid-template-columns: minmax(0, 1fr); }
   .project-catalog:is(.project-catalog--institutional,.project-catalog--landing) .catalog-card-art { border-right: 0; border-bottom: 1px solid #39474b; }
 }
+
+.catalog-detail-preview .project-preview {
+  border: 1px solid var(--catalog-light);
+  box-shadow: 0 18px 33px #0008;
+}
+.catalog-hero-copy .actions { margin-top: 22px; }
+.catalog-hero-copy .actions .button { margin-top: 0; }
