@@ -2,9 +2,9 @@ const section = document.querySelector('[data-ecosystem]');
 const controls = section.querySelector('[data-ecosystem-controls]');
 const buttons = [...controls.querySelectorAll('button')];
 const panels = buttons.map(button => document.getElementById(button.getAttribute('aria-controls')));
-const names = [...section.querySelectorAll('[data-ecosystem-name]')];
 const stage = section.querySelector('[data-ecosystem-stage]');
-const canvas = stage.querySelector('canvas');
+const renderArea = stage.querySelector('[data-ecosystem-render]');
+const canvas = renderArea.querySelector('canvas');
 const root = document.documentElement;
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -47,7 +47,6 @@ function select(index) {
   buttons.forEach((button, position) => {
     button.setAttribute('aria-pressed', String(position === index));
     panels[position].hidden = position !== index;
-    names[position].hidden = position !== index;
   });
   sync();
 }
@@ -70,13 +69,13 @@ if ('IntersectionObserver' in window) {
       const { createEcosystemScene } = await import('./ecosystem-scene.js');
       scene = createEcosystemScene(canvas);
       const resize = () => {
-        if (!scene || !stage.clientWidth || !stage.clientHeight) return;
-        scene.resize(stage.clientWidth, stage.clientHeight);
+        if (!scene || !renderArea.clientWidth || !renderArea.clientHeight) return;
+        scene.resize(renderArea.clientWidth, renderArea.clientHeight);
         scene.render(selected, time, [0, 0], true);
       };
       resize();
       stage.classList.add('has-scene');
-      new ResizeObserver(resize).observe(stage);
+      new ResizeObserver(resize).observe(renderArea);
       sync();
     } catch {
       scene = undefined;
@@ -85,12 +84,12 @@ if ('IntersectionObserver' in window) {
   preload.observe(stage);
 }
 
-stage.addEventListener('pointermove', event => {
+renderArea.addEventListener('pointermove', event => {
   if (!canAnimate() || event.pointerType === 'touch') return;
-  const bounds = stage.getBoundingClientRect();
+  const bounds = renderArea.getBoundingClientRect();
   pointer = [(event.clientX - bounds.left) / bounds.width - .5, (event.clientY - bounds.top) / bounds.height - .5];
 });
-stage.addEventListener('pointerleave', () => { pointer = [0, 0]; });
+renderArea.addEventListener('pointerleave', () => { pointer = [0, 0]; });
 canvas.addEventListener('webglcontextlost', () => {
   cancelAnimationFrame(frame);
   frame = 0;

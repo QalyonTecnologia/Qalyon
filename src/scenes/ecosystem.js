@@ -110,7 +110,8 @@ export function createEcosystemScene(canvas) {
     resize(width, height) {
       renderer.setSize(width, height);
       const aspect = width / height;
-      camera.perspective({ aspect, fov: aspect < 1.2 ? 39 : 33 });
+      const fitWidth = Math.atan(Math.tan(33 * Math.PI / 360) * 1.25 / aspect) * 360 / Math.PI;
+      camera.perspective({ aspect, fov: Math.max(33, fitWidth) });
     },
     render(selected, time, pointer, snap) {
       model.rotation.y = Math.sin(time * .62) * .11 + pointer[0] * .16;

@@ -422,26 +422,24 @@ main:has(.hero-stage)::before { background-position: right 1050px, bottom left; 
 
 /* Ecossistema Qalyon */
 .ecosystem {
+  position: relative;
+  isolation: isolate;
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
   margin-top: 32px;
   overflow: hidden;
   border: 1px solid var(--divider);
   border-radius: 20px;
-  background: var(--q-graphite);
-}
-.ecosystem-stage {
-  width: 100%;
-  position: relative;
-  aspect-ratio: 1.3;
-  min-height: 260px;
-  isolation: isolate;
   background:
-    radial-gradient(ellipse at 50% 58%, #324321 0%, #15211c 44%, transparent 76%),
+    radial-gradient(ellipse at 50% 45%, #293c25, transparent 66%),
     #101715;
 }
-.ecosystem-stage canvas {
+.ecosystem-render {
+  position: relative;
+  height: clamp(225px, 34vw, 380px);
+  min-width: 0;
+}
+.ecosystem-render canvas {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -453,8 +451,11 @@ main:has(.hero-stage)::before { background-position: right 1050px, bottom left; 
 .ecosystem-stage.has-scene .ecosystem-fallback { display: none; }
 .ecosystem-fallback {
   position: absolute;
-  inset: 22% 25%;
-  transform: rotateX(52deg) rotateZ(-34deg);
+  width: min(62%, 420px);
+  height: 56%;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(52deg) rotateZ(-34deg);
 }
 .ecosystem-fallback i {
   position: absolute;
@@ -501,58 +502,74 @@ main:has(.hero-stage)::before { background-position: right 1050px, bottom left; 
     linear-gradient(#8ab234, #8ab234) 50% 50% / 86% 5% no-repeat,
     #232f1d;
 }
-.ecosystem-info { min-width: 0; padding: clamp(20px, 4vw, 48px); }
-.ecosystem-nameplate {
+.ecosystem-controls {
   position: relative;
+  z-index: 1;
   display: flex;
-  align-items: center;
-  min-height: 4rem;
-  margin-bottom: clamp(22px, 3vw, 34px);
-  padding-block: 10px 18px;
-  border-bottom: 1px solid #b6f21a35;
-  perspective: 500px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: clamp(12px, 2.5vw, 28px) clamp(12px, 3vw, 32px) 0;
 }
-.ecosystem-nameplate::before {
+.ecosystem-displays {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 24px, 580px);
+  margin: -16px auto clamp(12px, 2.5vw, 28px);
+  perspective: 800px;
+}
+.ecosystem-displays::before {
   content: "";
   position: absolute;
-  inset: auto 0 -1px;
+  top: -28px;
+  left: 50%;
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(transparent, #b6f21a80);
+  pointer-events: none;
+}
+.ecosystem-panel {
+  position: relative;
+  padding: clamp(15px, 2.7vw, 26px);
+  border: 1px solid #b6f21a40;
+  border-radius: 12px;
+  text-align: center;
+  background: linear-gradient(150deg, #203026, #111b17 74%);
+  box-shadow: 0 14px 38px #070c09a3, 0 0 36px #b6f21a0d;
+}
+.ecosystem-panel::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  width: min(30%, 124px);
   height: 1px;
-  background: linear-gradient(90deg, var(--q-lime), transparent 80%);
-  box-shadow: 0 3px 16px #b6f21a4a;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, var(--q-lime), transparent);
+  box-shadow: 0 0 13px #b6f21a90;
 }
 .ecosystem-name {
   display: grid;
-  max-width: 100%;
-  padding-inline: .1em .25em;
-  transform: rotateX(14deg) rotateY(-14deg) rotateZ(-2deg);
-  transform-origin: left center;
+  transform: rotateX(10deg);
   transform-style: preserve-3d;
-  font: 850 clamp(1.5rem, 3.4vw, 3rem)/1.05 "Inter Display", Inter, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: -.035em;
+  font: 680 clamp(1.32rem, 3.4vw, 2.5rem)/1.12 "Inter Display", Inter, sans-serif;
+  letter-spacing: -.045em;
   text-wrap: balance;
   overflow-wrap: anywhere;
 }
-.ecosystem-name[hidden] { display: none; }
 .ecosystem-name > span { grid-area: 1 / 1; }
-.ecosystem-name-depth:nth-child(1) { color: #263617; transform: translateZ(-7px); }
-.ecosystem-name-depth:nth-child(2) { color: #4a621b; transform: translateZ(-5px); }
-.ecosystem-name-depth:nth-child(3) { color: #789b27; transform: translateZ(-2px); }
-.ecosystem-name-face {
-  transform: translateZ(1px);
-  color: #e1fa9c;
-  text-shadow: 0 0 18px #b6f21a50;
-}
+.ecosystem-name-depth:nth-child(1) { color: #355535; transform: translate3d(2px, 3px, -6px); }
+.ecosystem-name-depth:nth-child(2) { color: #728765; transform: translate3d(1px, 1px, -3px); }
+.ecosystem-name-face { transform: translateZ(1px); color: var(--q-off-white); }
 @media (prefers-reduced-motion: no-preference) {
-  :root:not([data-motion-paused]) .ecosystem-name:not([hidden]) {
-    animation: ecosystem-name-in .52s cubic-bezier(.2, .73, .22, 1) both;
+  :root:not([data-motion-paused]) [data-ecosystem-stage][data-active] .ecosystem-panel:not([hidden]) {
+    animation: ecosystem-panel-in .48s cubic-bezier(.2, .73, .22, 1) both;
   }
 }
-@keyframes ecosystem-name-in {
-  from { opacity: 0; transform: translate3d(-10px, 14px, -18px) rotateX(42deg) rotateY(-30deg) rotateZ(-2deg); }
-  to { opacity: 1; transform: rotateX(14deg) rotateY(-14deg) rotateZ(-2deg); }
+@keyframes ecosystem-panel-in {
+  from { opacity: .15; transform: translate3d(0, 12px, -35px) rotateX(22deg); }
+  to { opacity: 1; transform: none; }
 }
-.ecosystem-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: clamp(20px, 3vw, 34px); }
 .ecosystem-controls[hidden], .ecosystem-panel[hidden] { display: none; }
 .ecosystem-controls button {
   min-height: 44px;
@@ -568,13 +585,9 @@ main:has(.hero-stage)::before { background-position: right 1050px, bottom left; 
 .ecosystem-controls button:hover { border-color: var(--q-lime); }
 .ecosystem-controls button:focus-visible { outline: 2px solid var(--q-lime); outline-offset: 3px; }
 .ecosystem-controls button[aria-pressed="true"] { background: var(--q-lime); border-color: var(--q-lime); color: var(--q-night); }
-.ecosystem-panel p { margin: 10px 0; color: var(--q-text-secondary-dark); }
-.ecosystem-panel + .ecosystem-panel:not([hidden]) { margin-top: 18px; }
-.ecosystem-controls:not([hidden]) + div .ecosystem-panel { margin-top: 0; }
-@media (max-width: 740px) {
-  .ecosystem { grid-template-columns: minmax(0, 1fr); }
-  .ecosystem-stage { aspect-ratio: 1.45; }
-}
+.ecosystem-panel p { margin: 10px auto 12px; max-width: 48ch; color: var(--q-text-secondary-dark); }
+.ecosystem-panel + .ecosystem-panel:not([hidden]) { margin-top: 12px; }
+.ecosystem-stage[data-active] .ecosystem-panel { margin-top: 0; }
 
 .button { transition: background-color .24s, color .24s, transform .24s, box-shadow .24s; }
 .button:hover, .button:focus-visible { box-shadow: 0 0 22px #b6f21a4a; transform: translateY(-2px) scale(1.015); }
