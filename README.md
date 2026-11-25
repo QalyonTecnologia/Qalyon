@@ -1,6 +1,6 @@
 # Qalyon Institucional v2.2.0
 
-Site em português do Brasil, gerado em HTML estático com Node.js e sem dependências de instalação. O aplicativo Atlas tem ciclo de desenvolvimento separado. O catálogo institucional apresenta apenas a página pública do produto e seu estágio.
+Site em português do Brasil, gerado em HTML estático com Node.js. A cena do Ecossistema Qalyon usa OGL e carrega ao se aproximar da área visível. O aplicativo Atlas tem ciclo de desenvolvimento separado. O catálogo institucional apresenta apenas a página pública do produto e seu estágio.
 
 ## Estrutura
 
@@ -20,6 +20,7 @@ Site em português do Brasil, gerado em HTML estático com Node.js e sem depend�
 Use Node.js 20 ou superior. Na raiz, rode:
 
 ```sh
+npm ci
 npm run build
 npm run check
 python3 -m http.server 8000 --directory dist

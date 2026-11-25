@@ -1,4 +1,3 @@
-import { samples, metrics, formatMetric } from './assets/experience-data.js';
 import { site, contact, services, products, projects, process, media } from './content.mjs';
 
 const escape = value => String(value).replace(/[&<>"']/g, char => ({
@@ -167,28 +166,44 @@ const flowSection = `
   </div>
 </div></section>`;
 
-const initialSample = samples[0];
-const metricsSection = `
-<section class="wrap section holo-section">
-  ${sectionTitle('Indicadores de software', 'Dados que ajudam a decidir.', 'Veja como um painel pode acompanhar o volume de uso e a saúde de um sistema ao longo do tempo.')}
-  <div class="glass metrics-panel" data-metrics>
-    <div class="metrics-header">
-      <div><p class="label">Dados simulados</p><h3>Visão da operação</h3></div>
-      <div class="metric-periods" role="group" aria-label="Período da simulação">
-        ${samples.map((sample, i) => `<button type="button" disabled aria-pressed="${i === 0}">${sample.period}</button>`).join('')}
+const ecosystemSolutions = [
+  ...services.map((service, index) => ({
+    label: ['Sites', 'Portfólios', 'Landing pages', 'Sistemas'][index],
+    title: service.title,
+    description: service.summary,
+    href: servicePath(service),
+    action: 'Conhecer o serviço',
+  })),
+  {
+    label: 'Atlas',
+    title: 'Atlas by Qalyon',
+    description: products[0].summary,
+    href: productPath(products[0]),
+    action: 'Conhecer o Atlas',
+  },
+];
+
+const ecosystemSection = `
+<section class="wrap section" id="ecossistema" data-ecosystem>
+  ${sectionTitle('Ecossistema Qalyon', 'Tecnologia para diferentes momentos do negócio.', 'Explore os serviços digitais e o primeiro produto próprio da Qalyon em uma maquete interativa.')}
+  <div class="ecosystem">
+    <div class="ecosystem-stage" data-ecosystem-stage aria-hidden="true">
+      <div class="ecosystem-fallback"><i></i><i></i><i></i></div>
+      <canvas width="800" height="600"></canvas>
+    </div>
+    <div class="ecosystem-info">
+      <div class="ecosystem-controls" data-ecosystem-controls role="group" aria-label="Escolher solução" hidden>
+        ${ecosystemSolutions.map((solution, index) => `<button type="button" aria-pressed="${index === 0}" aria-controls="ecosystem-panel-${index}">${escape(solution.label)}</button>`).join('')}
+      </div>
+      <div aria-live="polite">
+        ${ecosystemSolutions.map((solution, index) => `
+          <article class="ecosystem-panel" id="ecosystem-panel-${index}">
+            <h3>${escape(solution.title)}</h3>
+            <p>${escape(solution.description)}</p>
+            <a class="showcase-link" href="${escape(solution.href)}">${escape(solution.action)}</a>
+          </article>`).join('')}
       </div>
     </div>
-    <p class="metrics-note">Exemplo de painel. Os valores são fictícios e não medem o desempenho da Qalyon ou do Atlas.</p>
-    <dl class="metrics-grid">
-      ${metrics(initialSample).map(item => `<div><dt>${item.label}</dt><dd><span data-counter>${formatMetric(item)}</span></dd></div>`).join('')}
-    </dl>
-    <figure class="metrics-chart">
-      <figcaption>Eventos por intervalo <span data-chart-period>· ${initialSample.period}</span></figcaption>
-      <ol class="chart-columns" data-chart aria-label="Eventos em cada intervalo">
-        ${initialSample.events.map((value, index) => `<li><span>${value}</span><meter min="0" max="${Math.max(...initialSample.events)}" value="${value}" aria-hidden="true"></meter><small>Dia ${index + 1}</small></li>`).join('')}
-      </ol>
-    </figure>
-    <p class="sr-only" data-metrics-status role="status"></p>
   </div>
 </section>`;
 
@@ -234,7 +249,7 @@ const home = `
   ${projectCards()}</div></section>
 <section class="wrap section">${sectionTitle('Produtos próprios', 'Do orçamento ao pagamento, em um só fluxo.')}${productCards()}</section>
 ${flowSection}
-${metricsSection}
+${ecosystemSection}
 ${benefitsSection}
 ${close()}`;
 
@@ -433,7 +448,7 @@ export function layout(page, origin, isPreview) {
   <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-symbol.png"><link rel="stylesheet" href="/assets/tokens.css">
   <link rel="stylesheet" href="/assets/styles.css">
   <script type="module" src="/assets/motion.js"></script>
-  ${page.path === '/' ? '<script type="module" src="/assets/experience.js"></script>' : ''}
+  ${page.path === '/' ? '<script type="module" src="/assets/experience.js"></script><script type="module" src="/assets/ecosystem.js"></script>' : ''}
   ${page.script ? `<script src="${page.script}" defer></script>` : ''}
 </head>
 <body>

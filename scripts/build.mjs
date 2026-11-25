@@ -1,6 +1,7 @@
 import { cp, mkdir, rm, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
+import { build } from 'esbuild';
 import { site } from '../src/content.mjs';
 import { pages, layout } from '../src/views.mjs';
 
@@ -15,6 +16,13 @@ if (!origin || !/^https:\/\/[a-z0-9.-]+$/i.test(origin)) {
 await rm(dist, { recursive: true, force: true });
 await mkdir(dist, { recursive: true });
 await cp(join(root, 'src/assets'), join(dist, 'assets'), { recursive: true });
+await build({
+  entryPoints: [join(root, 'src/scenes/ecosystem.js')],
+  outfile: join(dist, 'assets/ecosystem-scene.js'),
+  bundle: true,
+  minify: true,
+  format: 'esm',
+});
 
 for (const page of pages) {
   const dir = join(dist, page.path);
