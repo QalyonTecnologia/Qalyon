@@ -132,7 +132,7 @@ export const home = `
   <button type="button" class="motion-toggle" id="motion-toggle" hidden>Pausar movimento</button>
 </div>
 </section>
-<section class="band"><div class="wrap band-inner"><span>Estratégia, design e código</span><span>Projetos avulsos</span><span>Propostas sob consulta</span></div></section>
+<section class="band"><div class="wrap band-inner"><span>Estratégia, design e código</span><span>Projetos sob medida</span><span>Propostas sob consulta</span></div></section>
 ${ecosystemSection}
 <section class="tinted showcase-section" id="nossos-trabalhos"><div class="wrap section">
   <div class="showcase-heading"><div>${sectionTitle('Nossos trabalhos', 'Veja como uma ideia ganha forma.',
