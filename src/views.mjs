@@ -583,32 +583,35 @@ const whatsappUrl = whatsapp ? 'https://wa.me/' + whatsapp : '';
 const emailUrl = 'mailto:' + contact.email;
 
 const contactPage = `
-<section class="quote-intro"><div class="wrap page-intro">
-  ${heading('Contato comercial', 'Solicitar orçamento.',
-    'Conte o que você quer colocar no ar, melhorar ou automatizar. Usamos essas informações para entender o projeto e preparar uma proposta de acordo com o escopo.')}
-</div></section>
+<section class="quote-intro">
+  <div class="wrap quote-hero-layout">
+    <div class="quote-hero-copy">
+      ${heading('Contato comercial', 'Solicitar orçamento.',
+        'Conte o que você quer colocar no ar, melhorar ou automatizar. Vamos entender seu projeto e preparar uma proposta de acordo com o escopo.')}
+      <div class="actions">
+        <a class="button" href="#briefing">Preencher briefing</a>
+        <a class="arrow-link" href="#canais-contato">Ver canais de contato</a>
+      </div>
+    </div>
+    <div class="quote-hero-art" aria-hidden="true">
+      <div class="quote-hero-grid"></div>
+      <div class="quote-hero-orbit"></div>
+      <div class="quote-hero-stack">
+        <div class="quote-hero-sheet quote-hero-sheet--back"></div>
+        <div class="quote-hero-sheet quote-hero-sheet--main">
+          <div class="quote-hero-sheet-heading">${brandSymbol}<strong>Briefing de projeto</strong></div>
+          <div class="quote-hero-line"></div><div class="quote-hero-line quote-hero-line--short"></div>
+          <div class="quote-hero-textarea"></div>
+        </div>
+        <div class="quote-hero-message">${icon('M7 10h34v24H20l-9 6v-6H7z M14 19h20 M14 25h15')}</div>
+      </div>
+    </div>
+  </div>
+</section>
 <section class="wrap section compact quote-layout">
-  <aside class="quote-sidebar" aria-label="Canais e próximos passos">
-    <div class="quote-channel glass">
-      <span class="holo-icon">${icon('M7 10h34v24H20l-9 6v-6H7z M14 19h20 M14 25h15')}</span>
-      <h2>Prefere conversar?</h2>
-      <p>Comece pelo WhatsApp e conte sua ideia no seu ritmo.</p>
-      ${whatsappUrl ? link(whatsappUrl, 'Conversar no WhatsApp', true) : '<p class="quote-channel-status">O WhatsApp será liberado após a configuração do número comercial.</p>'}
-      ${link(emailUrl, 'Enviar e-mail')}
-    </div>
-    <div class="quote-next">
-      <h2>Como o orçamento é preparado</h2>
-      <dl>
-        <div><dt>Entendemos seu objetivo</dt><dd>O briefing ajuda a identificar o que você precisa e o que já tem em mãos.</dd></div>
-        <div><dt>Alinhamos escopo e prazos</dt><dd>Se faltar algum detalhe, conversamos para definir prioridades.</dd></div>
-        <div><dt>Apresentamos a proposta</dt><dd>Você recebe as entregas previstas, os prazos e o investimento para avaliar.</dd></div>
-      </dl>
-    </div>
-  </aside>
-  <div class="contact-panel quote-panel glass">
+  <div class="contact-panel quote-panel" id="briefing">
     <div class="quote-panel-heading">
       <div><p class="label">Briefing inicial</p><h2>Conte sobre seu projeto</h2></div>
-      <span class="quote-tag">Orçamento sob medida</span>
     </div>
     <p id="form-status">Preencha os campos obrigatórios. Se ainda estiver definindo o projeto, deixe os detalhes opcionais em branco.</p>
     <form id="quote-form" data-whatsapp-url="${whatsappUrl}" data-email-url="${emailUrl}" aria-describedby="form-status">
@@ -646,13 +649,13 @@ const contactPage = `
       </fieldset>
       <div class="quote-submit">
         <p>Confira o briefing antes de compartilhar. <a href="/privacidade/">Aviso de privacidade</a></p>
-        <button class="button" id="quote-review" type="submit" disabled>Revisar briefing <span aria-hidden="true">↗</span></button>
+        <button class="button" id="quote-review" type="submit" disabled>Revisar briefing</button>
       </div>
       <noscript><p>Ative o JavaScript para montar o resumo do briefing.</p></noscript>
     </form>
     <dialog class="quote-dialog" id="quote-dialog" aria-labelledby="quote-dialog-title">
       <h2 id="quote-dialog-title">Confira seu briefing</h2>
-      <p>${whatsappUrl ? 'Copie o resumo ou abra o WhatsApp ou seu aplicativo de e-mail com a mensagem preenchida. Revise e envie pelo canal escolhido.' : 'O resumo fica no seu navegador. Você pode copiá-lo para compartilhar quando quiser.'}</p>
+      <p>${whatsappUrl ? 'Copie o resumo ou abra um rascunho no WhatsApp ou no e-mail. Revise antes de enviar.' : 'Copie o resumo ou abra um rascunho no seu aplicativo de e-mail. Revise antes de enviar.'}</p>
       <label for="quote-summary">Resumo do projeto</label>
       <textarea id="quote-summary" rows="9" readonly></textarea>
       <div class="quote-dialog-actions">
@@ -664,6 +667,23 @@ const contactPage = `
       <p class="quote-copy-status" id="quote-copy-status" role="status"></p>
     </dialog>
   </div>
+  <aside class="quote-sidebar" id="canais-contato" aria-label="Canais e próximos passos">
+    <div class="quote-channel glass">
+      <span class="holo-icon">${icon('M7 10h34v24H20l-9 6v-6H7z M14 19h20 M14 25h15')}</span>
+      <h2>Prefere conversar?</h2>
+      <p>Conte sua ideia diretamente pelo canal de atendimento.</p>
+      ${whatsappUrl ? `<a class="button" href="${whatsappUrl}">Conversar no WhatsApp</a>` : ''}
+      <a class="${whatsappUrl ? 'arrow-link' : 'button'}" href="${emailUrl}">Enviar e-mail</a>
+    </div>
+    <div class="quote-next">
+      <h2>Como o orçamento é preparado</h2>
+      <dl>
+        <div><dt>Entendemos seu objetivo</dt><dd>O briefing ajuda a identificar o que você precisa e o que já tem em mãos.</dd></div>
+        <div><dt>Alinhamos escopo e prazos</dt><dd>Se faltar algum detalhe, conversamos para definir prioridades.</dd></div>
+        <div><dt>Apresentamos a proposta</dt><dd>Você recebe as entregas previstas, os prazos e o investimento para avaliar.</dd></div>
+      </dl>
+    </div>
+  </aside>
 </section>`;
 
 const privacyPage = `
@@ -719,6 +739,7 @@ export function layout(page, origin, isPreview) {
   ${page.path === '/sobre/' ? '<link rel="stylesheet" href="/assets/about-page.css">' : ''}
   ${[portfolioPath, institutionalPath, landingPath].includes(page.path) || projects.some(project => project.service === 'sistemas-web' && projectPath(project) === page.path) ? '<link rel="stylesheet" href="/assets/project-catalog.css?v=3">' : ''}
   ${page.path === '/projetos/' ? '<link rel="stylesheet" href="/assets/projects-page.css?v=2">' : ''}
+  ${page.path === '/contato/' ? '<link rel="stylesheet" href="/assets/contact-page.css">' : ''}
   ${page.script ? `<script src="${page.script}" defer></script>` : ''}
 </head>
 <body>
