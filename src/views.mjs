@@ -196,6 +196,7 @@ const ecosystemSolutions = [
   ...services.map((service, index) => ({
     label: ['Sites', 'Portfólios', 'Landing pages', 'Sistemas'][index],
     title: service.title,
+    softTitleDepth: service.slug === 'portfolio-profissional',
     description: service.summary,
     href: servicePath(service),
     action: 'Conhecer o serviço',
@@ -224,7 +225,7 @@ const ecosystemSection = `
       ${ecosystemSolutions.map((solution, index) => {
         const name = escape(solution.title);
         return `<article class="ecosystem-panel" id="ecosystem-panel-${index}">
-          <h3 class="ecosystem-name">
+          <h3 class="ecosystem-name${solution.softTitleDepth ? ' ecosystem-name--soft-depth' : ''}">
             <span class="ecosystem-name-depth" aria-hidden="true">${name}</span>
             <span class="ecosystem-name-depth" aria-hidden="true">${name}</span>
             <span class="ecosystem-name-face">${name}</span>

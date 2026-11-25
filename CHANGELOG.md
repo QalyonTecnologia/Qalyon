@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.4.1
+
+- Suaviza a sombra do letreiro Portfólios profissionais na maquete.
+
 ## 2.4.0
 
 - Adiciona os catálogos de portfólios, sites institucionais e landing pages, com filtros por área ou objetivo e links para as demonstrações.
