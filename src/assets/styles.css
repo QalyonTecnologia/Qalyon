@@ -564,9 +564,9 @@ main:has(.hero-stage)::before { background-position: right 1050px, bottom left; 
   overflow-wrap: anywhere;
 }
 .ecosystem-name > span { grid-area: 1 / 1; }
+.ecosystem-name-depth { opacity: .35; }
 .ecosystem-name-depth:nth-child(1) { color: #355535; transform: translate3d(2px, 3px, -6px); }
 .ecosystem-name-depth:nth-child(2) { color: #728765; transform: translate3d(1px, 1px, -3px); }
-.ecosystem-name--soft-depth .ecosystem-name-depth { opacity: .35; }
 .ecosystem-name-face { transform: translateZ(1px); color: var(--q-off-white); }
 @media (prefers-reduced-motion: no-preference) {
   :root:not([data-motion-paused]) [data-ecosystem-stage][data-active] .ecosystem-panel:not([hidden]) {

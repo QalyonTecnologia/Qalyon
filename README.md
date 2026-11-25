@@ -1,4 +1,4 @@
-# Qalyon Institucional v2.4.1
+# Qalyon Institucional v2.4.2
 
 Site em português do Brasil, gerado em HTML estático com Node.js. A cena do Ecossistema Qalyon usa OGL e carrega ao se aproximar da área visível. O aplicativo Atlas tem ciclo de desenvolvimento separado. O catálogo institucional apresenta apenas a página pública do produto e seu estágio.
 

@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.4.2
+
+- Aplica a mesma intensidade de sombra aos cinco letreiros da maquete.
+
 ## 2.4.1
 
 - Suaviza a sombra do letreiro Portfólios profissionais na maquete.
