@@ -1,3 +1,4 @@
+import { servicesCatalog, servicesHeroArtwork } from './services-catalog.mjs';
 import { workGallery } from './work-gallery.mjs';
 import { landingDemos } from './landing-demos.mjs';
 import { institutionalDemos } from './institutional-demos.mjs';
@@ -25,10 +26,6 @@ const picture = (key, extra = '') => `<img class="photo ${extra}" src="/assets/$
   srcset="/assets/${key}-640.webp 640w, /assets/${key}-1280.webp 1280w"
   sizes="(max-width: 720px) 92vw, 46vw" width="640" height="360"
   alt="${escape(media[key])}" loading="lazy" decoding="async">`;
-
-const serviceList = () => `<div class="service-list">${services.map(service => `
-  <article><h3>${service.title}</h3>
-  <p>${service.summary}</p>${link(servicePath(service), 'Conhecer ' + service.title.toLowerCase())}</article>`).join('')}</div>`;
 
 const projectPreview = project => {
   if (project.service === 'sites-institucionais') {
@@ -259,13 +256,31 @@ ${benefitsSection}
 ${close()}`;
 
 const servicesPage = `
-${pageIntro('Serviços digitais', 'Desenvolvimento sob medida para o seu negócio.',
-  'Apresente sua empresa com um site institucional, mostre seus trabalhos com um portfólio, divulgue uma oferta com uma landing page ou organize sua operação com um sistema web.', quote())}
-<section class="wrap section compact">${sectionTitle('Catálogo', 'Escolha pelo que você precisa resolver.')}${serviceList()}</section>
-<section class="tinted"><div class="wrap section split"><div>${sectionTitle('Condições comerciais', 'Um projeto por vez, com escopo claro.')}</div>
-<div class="body-copy"><p>Os serviços são contratados como projetos avulsos, com preço sob consulta. A proposta descreve escopo, entregas, prazos e condições de pagamento.</p>
-<p>O domínio e a hospedagem são de titularidade do cliente. A configuração e a publicação são alinhadas no escopo. Novas demandas podem receber orçamento próprio.</p>
-${quote()}</div></div></section>`;
+<section class="service-hero">
+  <div class="wrap service-hero-inner">
+    <div class="service-hero-copy">
+      ${heading('Serviços digitais', 'Desenvolvimento sob medida para o seu negócio.',
+        'Sites, portfólios, landing pages e sistemas web para apresentar seu trabalho e simplificar a rotina do seu negócio.')}
+      <div class="actions"><a class="button" href="/contato/">Solicitar orçamento</a><a class="arrow-link" href="#solucoes">Explorar soluções</a></div>
+    </div>
+    ${servicesHeroArtwork}
+  </div>
+</section>
+<section class="wrap section" id="solucoes">
+  ${sectionTitle('Catálogo', 'Escolha pelo que você precisa resolver.')}
+  ${servicesCatalog}
+</section>
+<section class="service-terms">
+  <div class="wrap section compact">
+    ${sectionTitle('Condições comerciais', 'Um projeto por vez, com escopo claro.')}
+    <dl>
+      <div><dt>Proposta sob consulta</dt><dd>O projeto é contratado de forma avulsa. A proposta descreve o escopo, as entregas, os prazos e as condições de pagamento.</dd></div>
+      <div><dt>Domínio e hospedagem</dt><dd>Ficam em sua titularidade. A configuração e a publicação são alinhadas no escopo do projeto.</dd></div>
+      <div><dt>Novas demandas</dt><dd>Melhorias e outras entregas podem receber orçamento próprio conforme a necessidade.</dd></div>
+    </dl>
+    <a class="button" href="/contato/">Solicitar orçamento</a>
+  </div>
+</section>`;
 
 const servicePage = service => `
 ${pageIntro('Serviços digitais', service.title, service.summary, quote(service.slug))}
@@ -529,6 +544,7 @@ export function layout(page, origin, isPreview) {
   <script type="module" src="/assets/motion.js"></script>
   ${page.path === '/' ? '<script type="module" src="/assets/experience.js"></script><script type="module" src="/assets/ecosystem.js"></script>' : ''}
   ${['/', '/projetos/'].includes(page.path) ? '<link rel="stylesheet" href="/assets/work-gallery.css?v=4"><script type="module" src="/assets/work-gallery.js?v=3"></script>' : ''}
+  ${page.path === '/servicos/' ? '<link rel="stylesheet" href="/assets/services-page.css">' : ''}
   ${page.script ? `<script src="${page.script}" defer></script>` : ''}
 </head>
 <body>

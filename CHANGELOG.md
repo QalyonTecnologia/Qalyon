@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.7.0
+
+- Redesenha a página de serviços com uma abertura holográfica, catálogo visual e condições comerciais organizadas.
+
 ## 2.6.1
 
 - Simplifica as miniaturas da vitrine para exibir apenas o título de cada categoria ao lado da imagem.
