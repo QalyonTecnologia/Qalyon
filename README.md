@@ -1,4 +1,4 @@
-# Qalyon Institucional v2.5.1
+# Qalyon Institucional v2.6.0
 
 Site em português do Brasil, gerado em HTML estático com Node.js. A cena do Ecossistema Qalyon usa OGL e carrega ao se aproximar da área visível. O aplicativo Atlas tem ciclo de desenvolvimento separado. O catálogo institucional apresenta apenas a página pública do produto e seu estágio.
 
@@ -49,7 +49,7 @@ Para preparar os arquivos de produção após a aprovação de lançamento, conf
 
 ## Verificação
 
-Build e checagem das 14 rotas, dos títulos, referências locais, imagens, labels e indexação. Revisão no Chrome desktop e em molduras de 320 e 390 px. Fluxo de navegação Serviço → Solicitar orçamento → serviço pré-selecionado → Privacidade. O formulário revisa os dados antes do compartilhamento.
+Build e checagem das 18 rotas, dos títulos, referências locais, imagens, labels e indexação. Revisão no Chrome desktop e em molduras de 320 e 390 px. Fluxo de navegação Serviço → Solicitar orçamento → serviço pré-selecionado → Privacidade. O formulário revisa os dados antes do compartilhamento.
 
 O tamanho em gzip local de HTML e CSS é medido por `npm run check`. Essa medida representa compressão de arquivos em laboratório e não o tempo de carregamento nem os Core Web Vitals de usuários. A home carrega um script curto para controlar a rede neural e as animações. O formulário carrega seu próprio script de pré-seleção, validação e revisão do briefing. O envio de leads depende de integração real.
 
@@ -60,4 +60,4 @@ O tamanho em gzip local de HTML e CSS é medido por `npm run check`. Essa medida
 
 ## Versionamento
 
-Cada atualização incrementa a versão em `package.json` e `package-lock.json` e registra as mudanças em `CHANGELOG.md`. Use o último número para correções, o número do meio para melhorias compatíveis e o primeiro número para mudanças incompatíveis. Cite a versão e descreva a mudança na mensagem do commit.
+Cada atualização incrementa a versão em `package.json` e `package-lock.json` e registra as mudanças em `CHANGELOG.md`. Use o último número para correções, o número do meio para melhorias compatíveis e o primeiro número para mudanças incompatíveis. Cite a versão e descreva a mudança na mensagem do commit. Registre no GitHub as alterações publicadas no site institucional.

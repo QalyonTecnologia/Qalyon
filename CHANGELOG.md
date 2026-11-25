@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.6.0
+
+- Amplia o palco e exibe a prévia dos quatro projetos em miniaturas selecionáveis.
+
 ## 2.5.1
 
 - Suaviza a inclinação das maquetes em ambos os eixos e o retorno após a saída do ponteiro.

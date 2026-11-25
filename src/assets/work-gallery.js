@@ -34,6 +34,7 @@ function draw() {
 }
 const resize = new ResizeObserver(draw);
 function select(index) {
+  if (art && selected === index) return;
   if (art) {
     resize.unobserve(art);
     art.classList.remove('is-rendered');
@@ -44,7 +45,7 @@ function select(index) {
     button.setAttribute('aria-pressed', String(i === index));
     panels[i].hidden = i !== index;
   });
-  art = panels[index].querySelector('.work-art');
+  art = panels[index].querySelector('.work-visual');
   assembly = art.querySelector('.work-assembly');
   if (render) art.prepend(canvas);
   resize.observe(art);
@@ -56,7 +57,7 @@ controls.hidden = false;
 gallery.classList.add('is-active');
 
 for (const panel of panels) {
-  const surface = panel.querySelector('.work-art');
+  const surface = panel.querySelector('.work-visual');
   surface.addEventListener('pointermove', event => {
     if (event.pointerType !== 'mouse' || reducedMotion.matches || document.documentElement.hasAttribute('data-motion-paused')) return;
     pointerX = event.clientX;
