@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.12.1
+
+- Suaviza o verde do card de atendimento na página de Contato.
+
 ## 2.12.0
 
 - Redesenha a página de Contato com abertura 3D e dá destaque ao formulário de orçamento e aos canais de atendimento.

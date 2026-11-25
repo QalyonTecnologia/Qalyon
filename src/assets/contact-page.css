@@ -88,8 +88,27 @@
 .quote-submit { padding-top: 8px; }
 .quote-submit p { margin: 0; }
 
-.quote-channel { border-radius: 16px; }
-.quote-channel .button { width: fit-content; }
+.quote-channel {
+  --quote-channel-accent: #a7bd86;
+  border: 1px solid #465543;
+  border-radius: 16px;
+  background: radial-gradient(ellipse at top right, #29382b, transparent 72%), #17201f;
+}
+.quote-channel .holo-icon {
+  color: var(--quote-channel-accent);
+  border-color: #54664a;
+  background: #202c24;
+  box-shadow: none;
+}
+.quote-channel .holo-icon svg { filter: none; }
+.quote-channel .button {
+  width: fit-content;
+  background: var(--quote-channel-accent);
+  border-color: var(--quote-channel-accent);
+}
+.quote-channel .button:hover { background: #b8c99e; border-color: #b8c99e; }
+.quote-channel .button:is(:hover, :focus-visible) { box-shadow: 0 0 14px #a7bd862b; }
+.quote-channel .arrow-link { color: var(--quote-channel-accent); }
 .quote-channel .button + .arrow-link { margin-top: 9px; }
 .quote-next {
   padding: clamp(18px, 3vw, 28px);
