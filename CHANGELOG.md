@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.10.1
+
+- Troca as imagens e legendas das aberturas de Portfólios e Sites institucionais por composições próprias de cada categoria.
+
 ## 2.10.0
 
 - Redesenha os catálogos de projetos e a demonstração de sistemas com aberturas 3D e navegação visual.

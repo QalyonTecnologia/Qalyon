@@ -347,10 +347,10 @@ const catalogArtwork = kind => `<div class="catalog-art" aria-hidden="true">
   <div class="catalog-floor"></div>
   <div class="catalog-art-stack">
     ${kind === 'portfolio' ? `<div class="catalog-screen catalog-screen--back"></div>
-      <div class="catalog-screen catalog-screen--photo"><img src="/assets/work-lia.webp" width="1440" height="960" alt=""></div>
-      <div class="catalog-float">${icon(catalogIcons['personal-trainer'])}<span>Lia Prado</span></div>`
-    : kind === 'institutional' ? `<div class="catalog-screen catalog-screen--browser"><i></i><img src="/assets/almeida-torres.webp" width="600" height="343" alt=""></div>
-      <div class="catalog-float catalog-float--phone"><span>Almeida<br>Torres</span><i></i><i></i></div>`
+      <div class="catalog-screen catalog-screen--photo"><img src="/assets/catalogo-portfolios.webp" width="768" height="480" alt=""></div>
+      <div class="catalog-float">${icon(catalogIcons.todos)}<span>Seleção de trabalhos</span></div>`
+    : kind === 'institutional' ? `<div class="catalog-screen catalog-screen--browser"><i></i><img src="/assets/catalogo-sites.webp" width="768" height="480" alt=""></div>
+      <div class="catalog-float catalog-float--phone"><span>Sobre a empresa</span><i></i><i></i></div>`
     : `<div class="catalog-screen catalog-screen--campaign"><div class="catalog-campaign-rings"></div><b>Da oferta<br>à ação.</b></div>
       <div class="catalog-float catalog-float--goals">${icon(catalogIcons.pedidos)}${icon(catalogIcons.agendamentos)}${icon(catalogIcons.orcamentos)}</div>`}
   </div>
