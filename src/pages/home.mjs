@@ -80,9 +80,10 @@ const ecosystemSection = `
     <div class="ecosystem-controls" data-ecosystem-controls role="group" aria-label="Escolher solução" hidden>
       ${ecosystemSolutions.map((solution, index) => `<button type="button" aria-pressed="${index === 0}" aria-controls="ecosystem-panel-${index}">${escape(solution.label)}</button>`).join('')}
     </div>
-    <div class="ecosystem-render" data-ecosystem-render aria-hidden="true">
-      <div class="ecosystem-fallback"><i></i><i></i><i></i></div>
-      <canvas width="800" height="600"></canvas>
+    <div class="ecosystem-render" data-ecosystem-render>
+      <div class="ecosystem-fallback" aria-hidden="true"><i></i><i></i><i></i></div>
+      <canvas width="800" height="600" aria-hidden="true"></canvas>
+      <span class="ecosystem-orbit-hint" aria-hidden="true">Arraste para girar</span>
     </div>
     <div class="ecosystem-displays" aria-live="polite">
       ${ecosystemSolutions.map((solution, index) => {

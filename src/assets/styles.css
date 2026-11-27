@@ -457,6 +457,28 @@ main:has(.hero-stage)::before { background-position: right 1050px, bottom left; 
 }
 .ecosystem-stage.has-scene canvas { opacity: 1; }
 .ecosystem-stage.has-scene .ecosystem-fallback { display: none; }
+.ecosystem-stage.has-scene .ecosystem-render { cursor: grab; touch-action: pan-y pinch-zoom; }
+.ecosystem-stage.has-scene .ecosystem-render[data-dragging] { cursor: grabbing; }
+.ecosystem-render:focus-visible { outline-offset: -6px; }
+.ecosystem-orbit-hint { display: none; }
+.ecosystem-stage.has-scene .ecosystem-orbit-hint {
+  display: block;
+  position: absolute;
+  right: clamp(12px, 2.5vw, 28px);
+  bottom: 18px;
+  color: var(--q-text-secondary-dark);
+  font: .72rem var(--mono);
+  pointer-events: none;
+}
+@media (max-width: 560px) {
+  .ecosystem-stage.has-scene .ecosystem-orbit-hint {
+    right: auto;
+    left: 50%;
+    bottom: 10px;
+    translate: -50%;
+    white-space: nowrap;
+  }
+}
 .ecosystem-fallback {
   position: absolute;
   width: min(62%, 420px);

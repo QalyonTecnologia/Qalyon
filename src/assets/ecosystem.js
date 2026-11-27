@@ -3,64 +3,85 @@ const controls = section.querySelector('[data-ecosystem-controls]');
 const buttons = [...controls.querySelectorAll('button')];
 const panels = buttons.map(button => document.getElementById(button.getAttribute('aria-controls')));
 const stage = section.querySelector('[data-ecosystem-stage]');
-const renderArea = stage.querySelector('[data-ecosystem-render]');
-const canvas = renderArea.querySelector('canvas');
+const surface = stage.querySelector('[data-ecosystem-render]');
+const canvas = surface.querySelector('canvas');
 const root = document.documentElement;
-const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+const clamp = (value, limit) => Math.max(-limit, Math.min(limit, value));
 
 let selected = 0;
 let scene;
-let visible = false;
+let resizeObserver;
+let inView = false;
 let frame = 0;
-let previousTime = 0;
-let time = 0;
-let pointer = [0, 0];
+let lastFrame = 0;
+let yaw = 0;
+let pitch = 0;
+let hoverYaw = 0;
+let hoverPitch = 0;
+let gesture;
 
-const canAnimate = () => visible && !document.hidden && !reducedMotion.matches && !root.hasAttribute('data-motion-paused');
+const paused = () => reduced.matches || root.hasAttribute('data-motion-paused');
+const visible = () => inView && !document.hidden;
+
+function stop() {
+  cancelAnimationFrame(frame);
+  frame = 0;
+  lastFrame = 0;
+}
 
 function draw(now) {
-  if (now - previousTime >= 32) {
-    time += Math.min((now - previousTime) / 1000, .05);
-    previousTime = now;
-    scene.render(selected, time, pointer, false);
-  }
-  frame = requestAnimationFrame(draw);
+  const delta = lastFrame ? (now - lastFrame) / 1000 : 1 / 60;
+  lastFrame = now;
+  const moving = scene.draw(delta, pitch + hoverPitch, yaw + hoverYaw, paused());
+  if (moving && visible()) frame = requestAnimationFrame(draw);
+  else stop();
 }
 
-function sync() {
-  if (!scene) return;
-  if (canAnimate()) {
-    if (!frame) {
-      previousTime = performance.now();
-      frame = requestAnimationFrame(draw);
-    }
-  } else {
-    cancelAnimationFrame(frame);
-    frame = 0;
-    if (visible && !document.hidden) scene.render(selected, time, [0, 0], true);
+function refresh(immediate = false) {
+  if (!scene || !visible()) return;
+  if (immediate || paused()) {
+    stop();
+    scene.draw(0, pitch + hoverPitch, yaw + hoverYaw, true);
+  } else if (!frame) {
+    frame = requestAnimationFrame(draw);
   }
 }
 
-function select(index) {
+function select(index, immediate = false) {
   selected = index;
   stage.dataset.active = String(index);
   buttons.forEach((button, position) => {
     button.setAttribute('aria-pressed', String(position === index));
     panels[position].hidden = position !== index;
   });
-  sync();
+  scene?.select(index);
+  refresh(immediate);
 }
 
-buttons.forEach((button, index) => button.addEventListener('click', () => select(index)));
-select(0);
+buttons.forEach((button, index) => button.addEventListener('click', event => select(index, event.detail === 0)));
+select(0, true);
 controls.hidden = false;
 
+function fallback() {
+  stop();
+  resizeObserver?.disconnect();
+  scene?.dispose();
+  scene = undefined;
+  gesture = undefined;
+  stage.classList.remove('has-scene');
+  surface.removeAttribute('tabindex');
+  surface.removeAttribute('role');
+  surface.removeAttribute('aria-label');
+  delete surface.dataset.dragging;
+}
+
 if ('IntersectionObserver' in window) {
-  const visibility = new IntersectionObserver(([entry]) => {
-    visible = entry.isIntersecting;
-    sync();
-  });
-  visibility.observe(stage);
+  new IntersectionObserver(([entry]) => {
+    inView = entry.isIntersecting;
+    if (visible()) refresh();
+    else stop();
+  }).observe(surface);
 
   const preload = new IntersectionObserver(async ([entry]) => {
     if (!entry.isIntersecting) return;
@@ -68,34 +89,93 @@ if ('IntersectionObserver' in window) {
     try {
       const { createEcosystemScene } = await import('./ecosystem-scene.js');
       scene = createEcosystemScene(canvas);
-      const resize = () => {
-        if (!scene || !renderArea.clientWidth || !renderArea.clientHeight) return;
-        scene.resize(renderArea.clientWidth, renderArea.clientHeight);
-        scene.render(selected, time, [0, 0], true);
-      };
-      resize();
+      if (!scene) return;
+      scene.select(selected);
+      scene.resize(surface.clientWidth, surface.clientHeight);
+      scene.draw(0, pitch, yaw, true);
       stage.classList.add('has-scene');
-      new ResizeObserver(resize).observe(renderArea);
-      sync();
+      surface.tabIndex = 0;
+      surface.setAttribute('role', 'group');
+      surface.setAttribute('aria-label', 'Modelo 3D. Use as setas para girar ou Escape para centralizar.');
+      resizeObserver = new ResizeObserver(() => {
+        scene?.resize(surface.clientWidth, surface.clientHeight);
+        refresh(true);
+      });
+      resizeObserver.observe(surface);
     } catch {
-      scene = undefined;
+      fallback();
     }
-  }, { rootMargin: '240px' });
-  preload.observe(stage);
+  }, { rootMargin: '220px' });
+  preload.observe(surface);
 }
 
-renderArea.addEventListener('pointermove', event => {
-  if (!canAnimate() || event.pointerType === 'touch') return;
-  const bounds = renderArea.getBoundingClientRect();
-  pointer = [(event.clientX - bounds.left) / bounds.width - .5, (event.clientY - bounds.top) / bounds.height - .5];
+surface.addEventListener('pointerdown', event => {
+  if (!scene || !event.isPrimary || event.button !== 0) return;
+  gesture = { id: event.pointerId, x: event.clientX, y: event.clientY, pitch, yaw, moved: false };
+  surface.setPointerCapture(event.pointerId);
+  hoverPitch = 0;
+  hoverYaw = 0;
 });
-renderArea.addEventListener('pointerleave', () => { pointer = [0, 0]; });
-canvas.addEventListener('webglcontextlost', () => {
-  cancelAnimationFrame(frame);
-  frame = 0;
-  scene = undefined;
-  stage.classList.remove('has-scene');
+
+surface.addEventListener('pointermove', event => {
+  if (!scene || !visible()) return;
+  if (gesture?.id === event.pointerId) {
+    const dx = event.clientX - gesture.x;
+    const dy = event.clientY - gesture.y;
+    if (Math.hypot(dx, dy) < 6 && !gesture.moved) return;
+    gesture.moved = true;
+    surface.dataset.dragging = '';
+    yaw = clamp(gesture.yaw + dx * .004, .65);
+    pitch = clamp(gesture.pitch + dy * .003, .24);
+  } else {
+    if (event.pointerType !== 'mouse' || paused()) return;
+    const bounds = surface.getBoundingClientRect();
+    hoverYaw = ((event.clientX - bounds.left) / bounds.width - .5) * .10;
+    hoverPitch = ((event.clientY - bounds.top) / bounds.height - .5) * .06;
+  }
+  refresh();
 });
-reducedMotion.addEventListener('change', sync);
-document.addEventListener('visibilitychange', sync);
-new MutationObserver(sync).observe(root, { attributes: true, attributeFilter: ['data-motion-paused'] });
+
+surface.addEventListener('pointerleave', () => {
+  hoverYaw = 0;
+  hoverPitch = 0;
+  refresh();
+});
+
+function finishGesture(event) {
+  if (gesture?.id !== event.pointerId) return;
+  const clicked = event.type === 'pointerup' && !gesture.moved;
+  gesture = undefined;
+  delete surface.dataset.dragging;
+  if (!clicked) return;
+  const index = scene?.pick(event.clientX, event.clientY);
+  if (index !== undefined && index !== selected) select(index);
+}
+surface.addEventListener('pointerup', finishGesture);
+surface.addEventListener('pointercancel', finishGesture);
+surface.addEventListener('lostpointercapture', finishGesture);
+
+surface.addEventListener('keydown', event => {
+  if (!scene) return;
+  const dx = { ArrowLeft: -.12, ArrowRight: .12 }[event.key] ?? 0;
+  const dy = { ArrowUp: -.09, ArrowDown: .09 }[event.key] ?? 0;
+  const reset = event.key === 'Escape';
+  if (!dx && !dy && !reset) return;
+  event.preventDefault();
+  yaw = reset ? 0 : clamp(yaw + dx, .65);
+  pitch = reset ? 0 : clamp(pitch + dy, .24);
+  hoverPitch = 0;
+  hoverYaw = 0;
+  refresh(true);
+});
+
+canvas.addEventListener('webglcontextlost', fallback);
+function syncMotion() {
+  hoverYaw = 0;
+  hoverPitch = 0;
+  if (visible()) refresh(paused());
+  else stop();
+}
+reduced.addEventListener('change', syncMotion);
+document.addEventListener('visibilitychange', syncMotion);
+new MutationObserver(syncMotion).observe(root, { attributes: true, attributeFilter: ['data-motion-paused'] });

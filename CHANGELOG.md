@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.13.4
+
+- Mantém a plataforma isométrica do seletor de serviços em Three.js, com giro manual e seleção direta de módulos.
+
 ## 2.13.2
 
 - Mantém o atalho de acessibilidade no rodapé.

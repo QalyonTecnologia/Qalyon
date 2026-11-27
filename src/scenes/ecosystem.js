@@ -1,56 +1,67 @@
-import { Box, Camera, Mesh, Program, Renderer, Transform } from 'ogl';
-
-const vertex = `
-  attribute vec3 position, normal;
-  uniform mat4 modelViewMatrix, projectionMatrix;
-  uniform mat3 normalMatrix;
-  varying vec3 vNormal;
-  void main() {
-    vNormal = normalize(normalMatrix * normal);
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-  }
-`;
-
-const fragment = `
-  precision mediump float;
-  uniform vec3 tint;
-  varying vec3 vNormal;
-  void main() {
-    vec3 n = normalize(vNormal);
-    float light = max(0.0, dot(n, normalize(vec3(-0.4, 0.8, 0.6))));
-    gl_FragColor = vec4(tint * (0.48 + light * 0.58), 1.0);
-  }
-`;
+import {
+  BoxGeometry, DirectionalLight, Group, HemisphereLight, MathUtils, Mesh,
+  MeshStandardMaterial, NoToneMapping, OrthographicCamera, PCFShadowMap,
+  Raycaster, Scene, Vector2, Vector3, WebGLRenderer,
+} from 'three';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
 export function createEcosystemScene(canvas) {
-  const renderer = new Renderer({
-    canvas, alpha: true, antialias: true, dpr: Math.min(window.devicePixelRatio || 1, 1.5),
-    powerPreference: 'low-power',
-  });
-  const { gl } = renderer;
-  gl.clearColor(0, 0, 0, 0);
-  const scene = new Transform();
-  const model = new Transform();
-  model.setParent(scene);
+  const options = { alpha: true, antialias: true, powerPreference: 'low-power' };
+  const context = canvas.getContext('webgl2', options);
+  if (!context) return null;
 
-  const camera = new Camera(gl, { fov: 32, near: 0.1, far: 100 });
+  const renderer = new WebGLRenderer({ canvas, context, ...options });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.6));
+  renderer.setClearColor(0, 0);
+  renderer.toneMapping = NoToneMapping;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = PCFShadowMap;
+
+  const scene = new Scene();
+  const model = new Group();
+  scene.add(model);
+
+  const camera = new OrthographicCamera(-5, 5, 4, -4, .1, 45);
   camera.position.set(6.4, 8.5, 9.9);
-  camera.lookAt([0, -.30, 0]);
-  const box = new Box(gl);
-  const color = {
-    base: [.09, .14, .135], trim: [.19, .30, .225], dark: [.10, .16, .15],
-    surface: [.23, .35, .27], white: [.77, .85, .80], lime: [.71, .95, .10],
-    muted: [.37, .53, .37],
+  camera.lookAt(0, .08, 0);
+  camera.updateMatrixWorld();
+
+  scene.add(new HemisphereLight('#e6f9e8', '#63866e', 1.18));
+  const key = new DirectionalLight('#e7ffef', 2.1);
+  key.position.set(-3.8, 7.2, 5.5);
+  key.castShadow = true;
+  key.shadow.mapSize.set(1024, 1024);
+  Object.assign(key.shadow.camera, { left: -5.5, right: 5.5, top: 5.5, bottom: -5.5, near: .5, far: 19 });
+  key.shadow.camera.updateProjectionMatrix();
+  key.shadow.normalBias = .028;
+  key.shadow.bias = -.00025;
+  scene.add(key);
+
+  const rim = new DirectionalLight('#b1e999', 1.25);
+  rim.position.set(4, 3, -5);
+  scene.add(rim);
+
+  const box = new BoxGeometry();
+  const bevel = new RoundedBoxGeometry(1, 1, 1, 2, .075);
+  const colors = {
+    base: '#172521', trim: '#405b49', dark: '#20322c', surface: '#426453',
+    white: '#d4e7da', lime: '#b6f21a', muted: '#68866b',
   };
-  const materials = Object.fromEntries(Object.entries(color).map(([name, tint]) => [
-    name, new Program(gl, { vertex, fragment, uniforms: { tint: { value: tint } } }),
+  const materials = Object.fromEntries(Object.entries(colors).map(([name, color]) => [
+    name, new MeshStandardMaterial({
+      color,
+      roughness: name === 'base' ? .43 : .64,
+      metalness: name === 'base' || name === 'trim' ? .20 : .08,
+      ...(name === 'lime' ? { emissive: '#9be517', emissiveIntensity: .22 } : {}),
+    }),
   ]));
 
   function slab(parent, material, x, y, z, width, height, depth) {
-    const mesh = new Mesh(gl, { geometry: box, program: materials[material] });
+    const geometry = height > .045 && width > .14 && depth > .14 ? bevel : box;
+    const mesh = new Mesh(geometry, materials[material]);
     mesh.position.set(x, y, z);
     mesh.scale.set(width, height, depth);
-    mesh.setParent(parent);
+    parent.add(mesh);
     return mesh;
   }
 
@@ -62,7 +73,7 @@ export function createEcosystemScene(canvas) {
 
   slab(model, 'base', 0, -.66, 0, 5.55, .24, 5.55);
   slab(model, 'trim', 0, -.51, 0, 5.47, .05, 5.47);
-  slab(model, 'dark', 0, -.45, 0, 5.36, .10, 5.36);
+  slab(model, 'dark', 0, -.45, 0, 5.36, .10, 5.36).receiveShadow = true;
 
   for (const sign of [-1, 1]) {
     slab(model, 'muted', 0, -.38, sign * 2.57, 5.15, .012, .024);
@@ -73,8 +84,8 @@ export function createEcosystemScene(canvas) {
   }
 
   const stations = [[0, 0], [-1.61, -1.59], [1.63, -1.59], [-1.61, 1.59], [1.63, 1.59]];
+  for (const x of [-1.61, 1.63]) circuit(0, 0, x, 0);
   for (const [x, z] of stations.slice(1)) {
-    circuit(0, 0, x, 0);
     circuit(x, 0, x, z);
     slab(model, 'lime', x, -.367, 0, .09, .018, .09);
   }
@@ -92,12 +103,13 @@ export function createEcosystemScene(canvas) {
     [[0, 0, 1.2, .06, 'muted'], [-.48, 0, .21, .31, 'white'], [-.16, 0, .21, .31, 'white'], [.16, 0, .21, .31, 'lime'], [.48, 0, .21, .31, 'lime']],
   ];
 
-  const modules = designs.map(design => {
-    const group = new Transform();
-    group.setParent(model);
+  const modules = designs.map((design, index) => {
+    const group = new Group();
+    group.userData.solution = index;
+    model.add(group);
     slab(group, 'trim', 0, .04, 0, 1.69, .11, 1.37);
     slab(group, 'muted', 0, .13, 0, 1.62, .06, 1.30);
-    slab(group, 'base', 0, .23, 0, 1.62, .14, 1.30);
+    slab(group, 'base', 0, .23, 0, 1.62, .14, 1.30).castShadow = true;
     const edge = slab(group, 'lime', 0, .30, 0, 1.59, .035, 1.27);
     slab(group, 'dark', 0, .34, 0, 1.49, .05, 1.17);
     for (const [x, z, width, depth, ink] of design) {
@@ -106,30 +118,66 @@ export function createEcosystemScene(canvas) {
     return { group, edge };
   });
 
-  return {
-    resize(width, height) {
-      renderer.setSize(width, height);
-      const aspect = width / height;
-      const fitWidth = Math.atan(Math.tan(33 * Math.PI / 360) * 1.25 / aspect) * 360 / Math.PI;
-      camera.perspective({ aspect, fov: Math.max(33, fitWidth) });
-    },
-    render(selected, time, pointer, snap) {
-      model.rotation.y = Math.sin(time * .62) * .11 + pointer[0] * .16;
-      model.rotation.x = pointer[1] * .08;
-      const ease = snap ? 1 : .12;
-      let station = 1;
-      modules.forEach(({ group, edge }, index) => {
-        const active = selected === index;
-        const [x, z] = stations[active ? 0 : station++];
-        const y = active ? .74 + Math.sin(time * 1.5) * .12 : -.29;
-        group.position.x += (x - group.position.x) * ease;
-        group.position.y += (y - group.position.y) * ease;
-        group.position.z += (z - group.position.z) * ease;
-        const size = group.scale.x + ((active ? 1.46 : .89) - group.scale.x) * ease;
-        group.scale.set(size, size, size);
-        edge.program = materials[active ? 'lime' : 'surface'];
-      });
-      renderer.render({ scene, camera });
-    },
-  };
+  const ray = new Raycaster();
+  const cursor = new Vector2();
+
+  function select(selected) {
+    let station = 1;
+    modules.forEach((module, index) => {
+      const active = selected === index;
+      const [x, z] = stations[active ? 0 : station++];
+      module.target = new Vector3(x, active ? .74 : -.29, z);
+      module.scale = active ? 1.46 : .89;
+      module.edge.material = materials[active ? 'lime' : 'surface'];
+    });
+  }
+
+  function resize(width, height) {
+    if (!width || !height) return;
+    const aspect = width / height;
+    const span = Math.max(6.6, 8.65 / aspect);
+    camera.right = span * aspect / 2;
+    camera.left = -camera.right;
+    camera.top = span / 2;
+    camera.bottom = -camera.top;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height, false);
+  }
+
+  function draw(delta, pitch, yaw, immediate = false) {
+    const blend = immediate ? 1 : 1 - Math.exp(-15 * Math.min(delta, .05));
+    model.rotation.x = MathUtils.lerp(model.rotation.x, pitch, blend);
+    model.rotation.y = MathUtils.lerp(model.rotation.y, yaw, blend);
+    let moving = Math.abs(model.rotation.x - pitch) > .002 || Math.abs(model.rotation.y - yaw) > .002;
+    for (const { group, target, scale } of modules) {
+      const distance = Math.hypot(group.position.x - target.x, group.position.z - target.z);
+      const lift = immediate || distance < .04 ? 0 : Math.min(.40, distance * .22);
+      group.position.x = MathUtils.lerp(group.position.x, target.x, blend);
+      group.position.y = MathUtils.lerp(group.position.y, target.y + lift, blend);
+      group.position.z = MathUtils.lerp(group.position.z, target.z, blend);
+      group.scale.setScalar(MathUtils.lerp(group.scale.x, scale, blend));
+      moving ||= group.position.distanceToSquared(target) > .00004 || Math.abs(group.scale.x - scale) > .004;
+    }
+    renderer.render(scene, camera);
+    return moving;
+  }
+
+  function pick(clientX, clientY) {
+    const rect = canvas.getBoundingClientRect();
+    cursor.set((clientX - rect.left) / rect.width * 2 - 1, 1 - (clientY - rect.top) / rect.height * 2);
+    ray.setFromCamera(cursor, camera);
+    const hit = ray.intersectObjects(model.children, true)[0];
+    return hit?.object.parent.userData.solution;
+  }
+
+  function dispose() {
+    box.dispose();
+    bevel.dispose();
+    for (const material of Object.values(materials)) material.dispose();
+    key.shadow.dispose();
+    renderer.dispose();
+  }
+
+  select(0);
+  return { select, resize, draw, pick, dispose };
 }
