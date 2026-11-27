@@ -447,6 +447,69 @@ main:has(.hero-stage)::before { background-position: right 1050px, bottom left; 
   height: clamp(225px, 34vw, 380px);
   min-width: 0;
 }
+.ecosystem-render canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+}
+.ecosystem-stage.has-scene canvas { opacity: 1; }
+.ecosystem-stage.has-scene .ecosystem-fallback { display: none; }
+.ecosystem-fallback {
+  position: absolute;
+  width: min(62%, 420px);
+  height: 56%;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateX(52deg) rotateZ(-34deg);
+}
+.ecosystem-fallback i {
+  position: absolute;
+  inset: 0;
+  border: 1px solid #82ba3333;
+  border-radius: 13px;
+  background: repeating-linear-gradient(90deg, transparent 0 22px, #b6f21a24 23px 24px), #182820;
+  box-shadow: 5px 10px #101913;
+}
+.ecosystem-fallback i:nth-child(2) { inset: 10%; transform: translate(8%, -22%); }
+.ecosystem-fallback i:nth-child(3) {
+  inset: 23%;
+  transform: translate(20%, -54%);
+  border-color: var(--q-lime);
+  box-shadow: 4px 8px #405417, 0 0 46px #b6f21a4a;
+}
+/* Layouts visuais da lâmina em destaque quando WebGL está indisponível. */
+.ecosystem-fallback i:nth-child(3) {
+  background:
+    linear-gradient(var(--q-lime), var(--q-lime)) 50% 20% / 75% 10% no-repeat,
+    linear-gradient(#688431, #688431) 24% 72% / 30% 44% no-repeat,
+    repeating-linear-gradient(0deg, #a4bd7355 0 5px, transparent 5px 12px) 78% 72% / 30% 44% no-repeat,
+    #232f1d;
+}
+.ecosystem-stage[data-active="1"] .ecosystem-fallback i:nth-child(3) {
+  background: conic-gradient(from 90deg, #536e29 25%, #a1cb51 0 50%, #28371f 0 75%, #617f34 0);
+}
+.ecosystem-stage[data-active="2"] .ecosystem-fallback i:nth-child(3) {
+  background:
+    linear-gradient(#a8ba83, #a8ba83) 50% 32% / 70% 10% no-repeat,
+    linear-gradient(var(--q-lime), var(--q-lime)) 50% 70% / 46% 24% no-repeat,
+    #232f1d;
+}
+.ecosystem-stage[data-active="3"] .ecosystem-fallback i:nth-child(3) {
+  background:
+    linear-gradient(#768d4e, #768d4e) 20% 77% / 12% 28% no-repeat,
+    linear-gradient(#8ab234, #8ab234) 49% 71% / 12% 47% no-repeat,
+    linear-gradient(var(--q-lime), var(--q-lime)) 78% 53% / 12% 69% no-repeat,
+    #232f1d;
+}
+.ecosystem-stage[data-active="4"] .ecosystem-fallback i:nth-child(3) {
+  background:
+    radial-gradient(circle, var(--q-lime) 0 24%, transparent 26%) 0 50% / 25% 75% repeat-x,
+    linear-gradient(#8ab234, #8ab234) 50% 50% / 86% 5% no-repeat,
+    #232f1d;
+}
 .ecosystem-controls {
   position: relative;
   z-index: 1;
@@ -494,9 +557,35 @@ main:has(.hero-stage)::before { background-position: right 1050px, bottom left; 
   background: linear-gradient(90deg, transparent, var(--q-lime), transparent);
   box-shadow: 0 0 13px #b6f21a90;
 }
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("./fonts/space-grotesk-600.woff2") format("woff2");
+  font-weight: 600;
+  font-display: swap;
+}
 .ecosystem-name {
-  font: 600 clamp(1.35rem, 3.4vw, 2.4rem)/1.12 var(--display);
+  display: grid;
+  transform: rotateX(10deg);
+  transform-style: preserve-3d;
+  font: 600 clamp(1.32rem, 3.4vw, 2.5rem)/1.12 "Space Grotesk", var(--display);
+  font-size: min(clamp(1.32rem, 3.4vw, 2.5rem), 13cqi);
+  letter-spacing: -.025em;
   text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+.ecosystem-name > span { grid-area: 1 / 1; }
+.ecosystem-name-depth { opacity: .35; }
+.ecosystem-name-depth:nth-child(1) { color: #355535; transform: translate3d(2px, 3px, -6px); }
+.ecosystem-name-depth:nth-child(2) { color: #728765; transform: translate3d(1px, 1px, -3px); }
+.ecosystem-name-face { transform: translateZ(1px); color: var(--q-off-white); }
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-motion-paused]) [data-ecosystem-stage][data-active] .ecosystem-panel:not([hidden]) {
+    animation: ecosystem-panel-in .48s cubic-bezier(.2, .73, .22, 1) both;
+  }
+}
+@keyframes ecosystem-panel-in {
+  from { opacity: .15; transform: translate3d(0, 12px, -35px) rotateX(22deg); }
+  to { opacity: 1; transform: none; }
 }
 .ecosystem-controls[hidden], .ecosystem-panel[hidden] { display: none; }
 .ecosystem-controls button {

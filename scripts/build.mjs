@@ -2,7 +2,6 @@ import { cp, mkdir, rm, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { build } from 'esbuild';
-import { svelteClient } from './svelte-build.mjs';
 import { site } from '../src/content.mjs';
 import { pages } from '../src/views.mjs';
 import { layout } from '../src/layout.mjs';
@@ -26,9 +25,6 @@ await build({
   },
   outdir: join(dist, 'assets'),
   bundle: true,
-  conditions: ['svelte'],
-  external: ['/assets/ecosystem/*'],
-  plugins: [svelteClient],
   minify: true,
   format: 'esm',
 });
