@@ -81,7 +81,7 @@ const ecosystemSection = `
       ${ecosystemSolutions.map((solution, index) => `<button type="button" aria-pressed="${index === 0}" aria-controls="ecosystem-panel-${index}">${escape(solution.label)}</button>`).join('')}
     </div>
     <div class="ecosystem-render" data-ecosystem-render>
-      <div class="ecosystem-fallback" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="ecosystem-fallback" aria-hidden="true"></div>
       <canvas width="800" height="600" aria-hidden="true"></canvas>
       <span class="ecosystem-orbit-hint" aria-hidden="true">Arraste para girar</span>
     </div>

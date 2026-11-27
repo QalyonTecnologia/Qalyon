@@ -68,6 +68,13 @@ assert.deepEqual(heroImages.map(([, src]) => src), ['/assets/qalyon-symbol.webp'
 assert.match(home, /<canvas id="neural-canvas"/);
 assert.doesNotMatch(home, /<video\b|\.mp4/);
 await read('/assets/neural.js');
+assert.match(home, /data-ecosystem-render/);
+assert.equal([...home.matchAll(/aria-controls="ecosystem-panel-\d+"/g)].length, 5);
+await read('/assets/ecosystem-scene.js');
+const ecosystemStyles = (await read('/assets/styles.css')).toString();
+const modelStills = [...ecosystemStyles.matchAll(/\/assets\/ecosystem\/placa-[a-z]+\.webp/g)];
+assert.equal(new Set(modelStills.map(([path]) => path)).size, 5);
+await Promise.all(modelStills.map(([path]) => read(path)));
 
 const form = (await read('/contato/')).toString();
 assert.match(form, /<form id="quote-form" data-whatsapp-url="(?:https:\/\/wa\.me\/\d+)?" data-email-url="mailto:[^"?]+"/);

@@ -2,7 +2,7 @@
 
 ## 2.13.4
 
-- Mantém a plataforma isométrica do seletor de serviços em Three.js, com giro manual e seleção direta de módulos.
+- Preserva a plataforma isométrica do seletor de serviços e atualiza sua cena para Three.js, com giro manual e seleção de módulos.
 
 ## 2.13.2
 

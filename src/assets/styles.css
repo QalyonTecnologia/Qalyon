@@ -457,6 +457,15 @@ main:has(.hero-stage)::before { background-position: right 1050px, bottom left; 
 }
 .ecosystem-stage.has-scene canvas { opacity: 1; }
 .ecosystem-stage.has-scene .ecosystem-fallback { display: none; }
+.ecosystem-fallback {
+  position: absolute;
+  inset: 0;
+  background: center / contain no-repeat url('/assets/ecosystem/placa-sites.webp');
+}
+.ecosystem-stage[data-active="1"] .ecosystem-fallback { background-image: url('/assets/ecosystem/placa-portfolios.webp'); }
+.ecosystem-stage[data-active="2"] .ecosystem-fallback { background-image: url('/assets/ecosystem/placa-landing.webp'); }
+.ecosystem-stage[data-active="3"] .ecosystem-fallback { background-image: url('/assets/ecosystem/placa-sistemas.webp'); }
+.ecosystem-stage[data-active="4"] .ecosystem-fallback { background-image: url('/assets/ecosystem/placa-atlas.webp'); }
 .ecosystem-stage.has-scene .ecosystem-render { cursor: grab; touch-action: pan-y pinch-zoom; }
 .ecosystem-stage.has-scene .ecosystem-render[data-dragging] { cursor: grabbing; }
 .ecosystem-render:focus-visible { outline-offset: -6px; }
@@ -478,59 +487,6 @@ main:has(.hero-stage)::before { background-position: right 1050px, bottom left; 
     translate: -50%;
     white-space: nowrap;
   }
-}
-.ecosystem-fallback {
-  position: absolute;
-  width: min(62%, 420px);
-  height: 56%;
-  top: 46%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotateX(52deg) rotateZ(-34deg);
-}
-.ecosystem-fallback i {
-  position: absolute;
-  inset: 0;
-  border: 1px solid #82ba3333;
-  border-radius: 13px;
-  background: repeating-linear-gradient(90deg, transparent 0 22px, #b6f21a24 23px 24px), #182820;
-  box-shadow: 5px 10px #101913;
-}
-.ecosystem-fallback i:nth-child(2) { inset: 10%; transform: translate(8%, -22%); }
-.ecosystem-fallback i:nth-child(3) {
-  inset: 23%;
-  transform: translate(20%, -54%);
-  border-color: var(--q-lime);
-  box-shadow: 4px 8px #405417, 0 0 46px #b6f21a4a;
-}
-/* Layouts visuais da lâmina em destaque quando WebGL está indisponível. */
-.ecosystem-fallback i:nth-child(3) {
-  background:
-    linear-gradient(var(--q-lime), var(--q-lime)) 50% 20% / 75% 10% no-repeat,
-    linear-gradient(#688431, #688431) 24% 72% / 30% 44% no-repeat,
-    repeating-linear-gradient(0deg, #a4bd7355 0 5px, transparent 5px 12px) 78% 72% / 30% 44% no-repeat,
-    #232f1d;
-}
-.ecosystem-stage[data-active="1"] .ecosystem-fallback i:nth-child(3) {
-  background: conic-gradient(from 90deg, #536e29 25%, #a1cb51 0 50%, #28371f 0 75%, #617f34 0);
-}
-.ecosystem-stage[data-active="2"] .ecosystem-fallback i:nth-child(3) {
-  background:
-    linear-gradient(#a8ba83, #a8ba83) 50% 32% / 70% 10% no-repeat,
-    linear-gradient(var(--q-lime), var(--q-lime)) 50% 70% / 46% 24% no-repeat,
-    #232f1d;
-}
-.ecosystem-stage[data-active="3"] .ecosystem-fallback i:nth-child(3) {
-  background:
-    linear-gradient(#768d4e, #768d4e) 20% 77% / 12% 28% no-repeat,
-    linear-gradient(#8ab234, #8ab234) 49% 71% / 12% 47% no-repeat,
-    linear-gradient(var(--q-lime), var(--q-lime)) 78% 53% / 12% 69% no-repeat,
-    #232f1d;
-}
-.ecosystem-stage[data-active="4"] .ecosystem-fallback i:nth-child(3) {
-  background:
-    radial-gradient(circle, var(--q-lime) 0 24%, transparent 26%) 0 50% / 25% 75% repeat-x,
-    linear-gradient(#8ab234, #8ab234) 50% 50% / 86% 5% no-repeat,
-    #232f1d;
 }
 .ecosystem-controls {
   position: relative;
