@@ -1,10 +1,5 @@
 # Histórico de versões
 
-## 2.14.0
-
-- Redesenha a abertura da página inicial com o Q facetado e apresenta o projeto Almeida Torres em uma página editorial.
-- Simplifica as interações da home e mantém a navegação direta até os serviços e o orçamento.
-
 ## 2.13.2
 
 - Mantém o atalho de acessibilidade no rodapé.

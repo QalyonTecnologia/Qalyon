@@ -1,6 +1,6 @@
-# Qalyon Institucional v2.14.0
+# Qalyon Institucional v2.13.2
 
-Site estático em português do Brasil, gerado com Node.js. O catálogo apresenta os serviços da Qalyon, suas demonstrações e o estágio do Atlas. As imagens da home e as cenas OGL do mostruário são hospedadas no próprio site.
+Site estático em português do Brasil, gerado com Node.js. O catálogo apresenta os serviços da Qalyon, suas demonstrações e o estágio do Atlas. As cenas da home usam Canvas e OGL, com recursos hospedados no próprio site.
 
 ## Rodar e editar
 
