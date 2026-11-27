@@ -1,0 +1,42 @@
+.ecosystem.motion-enter { animation: none; }
+
+.ecosystem-render {
+  height: clamp(235px, 33vw, 395px);
+}
+
+.ecosystem-viewport {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ecosystem-stage.has-scene .ecosystem-viewport { opacity: 1; }
+/* The stills use the same five models and camera as the WebGL scene. */
+.ecosystem-fallback {
+  position: absolute;
+  inset: 0;
+  background: center / contain no-repeat url('/assets/ecosystem/sites.webp');
+}
+
+.ecosystem-stage[data-active="1"] .ecosystem-fallback { background-image: url('/assets/ecosystem/portfolios.webp'); }
+.ecosystem-stage[data-active="2"] .ecosystem-fallback { background-image: url('/assets/ecosystem/campanhas.webp'); }
+.ecosystem-stage[data-active="3"] .ecosystem-fallback { background-image: url('/assets/ecosystem/sistemas.webp'); }
+.ecosystem-stage[data-active="4"] .ecosystem-fallback { background-image: url('/assets/ecosystem/atlas.webp'); }
+.ecosystem-stage.has-scene .ecosystem-fallback { display: none; }
+
+.ecosystem-stage.has-scene .ecosystem-render::before {
+  content: "";
+  position: absolute;
+  inset: 17% 8% 1%;
+  background: radial-gradient(ellipse at 50% 76%, #05090895, transparent 48%);
+  pointer-events: none;
+}
+
+.ecosystem-controls button {
+  transition: border-color 140ms, background-color 140ms, color 140ms;
+}
+
+@media (max-width: 520px) {
+  .ecosystem-render { height: clamp(210px, 74vw, 295px); }
+}

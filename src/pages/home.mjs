@@ -81,18 +81,14 @@ const ecosystemSection = `
       ${ecosystemSolutions.map((solution, index) => `<button type="button" aria-pressed="${index === 0}" aria-controls="ecosystem-panel-${index}">${escape(solution.label)}</button>`).join('')}
     </div>
     <div class="ecosystem-render" data-ecosystem-render aria-hidden="true">
-      <div class="ecosystem-fallback"><i></i><i></i><i></i></div>
-      <canvas width="800" height="600"></canvas>
+      <div class="ecosystem-fallback"></div>
+      <div class="ecosystem-viewport" data-ecosystem-viewport></div>
     </div>
     <div class="ecosystem-displays" aria-live="polite">
       ${ecosystemSolutions.map((solution, index) => {
         const name = escape(solution.title);
         return `<article class="ecosystem-panel" id="ecosystem-panel-${index}">
-          <h3 class="ecosystem-name">
-            <span class="ecosystem-name-depth" aria-hidden="true">${name}</span>
-            <span class="ecosystem-name-depth" aria-hidden="true">${name}</span>
-            <span class="ecosystem-name-face">${name}</span>
-          </h3>
+          <h3 class="ecosystem-name">${name}</h3>
           <p>${escape(solution.description)}</p>
           <a class="showcase-link" href="${escape(solution.href)}">${escape(solution.action)}</a>
         </article>`;

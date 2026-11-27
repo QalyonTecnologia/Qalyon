@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.13.3
+
+- Redesenha as cinco cenas do seletor de serviços em Threlte, com renderização sob demanda e alternativas estáticas.
+
 ## 2.13.2
 
 - Mantém o atalho de acessibilidade no rodapé.

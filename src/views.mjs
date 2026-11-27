@@ -15,7 +15,7 @@ const workAssets = {
 const catalogAssets = { styles: ['project-catalog.css?v=4'], script: 'portfolio-filter.js' };
 
 export const pages = [
-  { path: '/', title: 'Qalyon — Software house, sites, sistemas e SaaS', description: 'Conheça a Qalyon, software house que cria SaaS próprios e desenvolve sites, landing pages, portfólios profissionais e sistemas web sob medida.', body: home, ...workAssets, modules: ['experience.js', 'ecosystem.js', ...workAssets.modules] },
+  { path: '/', title: 'Qalyon — Software house, sites, sistemas e SaaS', description: 'Conheça a Qalyon, software house que cria SaaS próprios e desenvolve sites, landing pages, portfólios profissionais e sistemas web sob medida.', body: home, ...workAssets, styles: [...workAssets.styles, 'ecosystem-scene.css'], modules: ['experience.js', 'ecosystem.js?v=2', ...workAssets.modules] },
   { path: '/servicos/', title: 'Serviços digitais — Qalyon', description: 'Sites institucionais, landing pages, portfólios profissionais e sistemas web. Entenda as soluções e solicite um orçamento.', body: servicesPage, styles: ['services-page.css?v=2'] },
   ...services.map(service => ({ path: servicePath(service), title: service.title + ' — Qalyon', description: service.summary, body: servicePage(service), styles: ['services-page.css?v=2', 'service-detail.css'] })),
   { path: '/produtos/', title: 'Produtos próprios — Qalyon', description: 'Conheça os produtos próprios da Qalyon, incluindo o Atlas, primeiro SaaS da empresa, em desenvolvimento.', body: productsPage, styles: ['products-page.css'] },
