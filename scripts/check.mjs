@@ -61,13 +61,16 @@ for (const page of pages) {
 
 const home = (await read('/')).toString();
 assert.ok(home.includes(site.slogan));
-assert.doesNotMatch(home, /hero-\d|loop-\d/);
-const hero = home.match(/<section class="hero-stage">[\s\S]*?<\/section>/)[0];
-const heroImages = [...hero.matchAll(/<img\b[^>]*\bsrc="([^"]+)"[^>]*>/g)];
-assert.deepEqual(heroImages.map(([, src]) => src), ['/assets/qalyon-symbol.webp']);
-assert.match(home, /<canvas id="neural-canvas"/);
-assert.doesNotMatch(home, /<video\b|\.mp4/);
-await read('/assets/neural.js');
+const hero = home.match(/<section class="precision-hero">[\s\S]*?<\/section>/)?.[0];
+assert.ok(hero, 'Abertura da página inicial ausente');
+assert.match(hero, /src="\/assets\/loop-1280\.webp"/);
+assert.match(hero, /\/assets\/loop-640\.webp 640w/);
+assert.match(hero, /id="motion-toggle"/);
+assert.doesNotMatch(home, /<(?:canvas|video)\b|\.mp4/);
+assert.match(home, /href="\/projetos\/almeida-torres\/"/);
+
+const featuredProject = (await read('/projetos/almeida-torres/')).toString();
+assert.match(featuredProject, /href="\/contato\/\?servico=sites-institucionais"/);
 
 const form = (await read('/contato/')).toString();
 assert.match(form, /<form id="quote-form" data-whatsapp-url="(?:https:\/\/wa\.me\/\d+)?" data-email-url="mailto:[^"?]+"/);
