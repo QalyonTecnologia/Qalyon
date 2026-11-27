@@ -1,5 +1,5 @@
 import {
-  DirectionalLight, HemisphereLight, MathUtils, NoToneMapping, OrthographicCamera,
+  DirectionalLight, HemisphereLight, NoToneMapping, OrthographicCamera,
   PCFShadowMap, Raycaster, Scene, Vector2, WebGLRenderer,
 } from 'three';
 import { createEcosystemModel } from './ecosystem-model.js';
@@ -40,6 +40,21 @@ export function createEcosystemScene(canvas) {
   scene.add(board.model);
   const ray = new Raycaster();
   const point = new Vector2();
+  const velocity = new Vector2();
+  const rotation = board.model.rotation;
+
+  // A critically damped spring keeps its velocity when the pointer changes direction.
+  function rotateAxis(axis, target, elapsed, response) {
+    const offset = rotation[axis] - target;
+    const drift = velocity[axis] + response * offset;
+    const decay = Math.exp(-response * elapsed);
+    const remaining = (offset + drift * elapsed) * decay;
+    const speed = (velocity[axis] - response * drift * elapsed) * decay;
+    const settled = Math.abs(remaining) < .00025 && Math.abs(speed) < .006;
+    rotation[axis] = settled ? target : target + remaining;
+    velocity[axis] = settled ? 0 : speed;
+    return !settled;
+  }
 
   function resize(width, height) {
     const aspect = width / height;
@@ -52,15 +67,25 @@ export function createEcosystemScene(canvas) {
     renderer.setSize(width, height, false);
   }
 
-  function draw(delta, pitch, yaw, immediate) {
-    const blend = immediate ? 1 : 1 - Math.exp(-15 * Math.min(delta, .05));
-    const rotation = board.model.rotation;
-    rotation.x = MathUtils.lerp(rotation.x, pitch, blend);
-    rotation.y = MathUtils.lerp(rotation.y, yaw, blend);
-    const moving = board.update(blend);
+  function draw(delta, pitch, yaw, immediate, dragging = false) {
+    const elapsed = Math.min(delta, .05);
+    const response = dragging ? 32 : 20;
+    let rotating = false;
+    if (immediate) {
+      rotation.x = pitch;
+      rotation.y = yaw;
+      velocity.set(0, 0);
+    } else {
+      const pitchMoving = rotateAxis('x', pitch, elapsed, response);
+      const yawMoving = rotateAxis('y', yaw, elapsed, response);
+      rotating = pitchMoving || yawMoving;
+    }
+    const moving = board.update(immediate ? 1 : 1 - Math.exp(-15 * elapsed));
     renderer.render(scene, camera);
-    return moving || Math.abs(rotation.x - pitch) > .002 || Math.abs(rotation.y - yaw) > .002;
+    return moving || rotating;
   }
+
+  const getOrbit = () => ({ pitch: rotation.x, yaw: rotation.y });
 
   function pick(clientX, clientY) {
     const bounds = canvas.getBoundingClientRect();
@@ -76,5 +101,5 @@ export function createEcosystemScene(canvas) {
     renderer.dispose();
   }
 
-  return { draw, resize, select: board.select, pick, dispose };
+  return { draw, resize, getOrbit, select: board.select, pick, dispose };
 }

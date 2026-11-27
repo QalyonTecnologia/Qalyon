@@ -33,7 +33,7 @@ function stop() {
 function draw(now) {
   const delta = lastFrame ? (now - lastFrame) / 1000 : 1 / 60;
   lastFrame = now;
-  const moving = scene.draw(delta, pitch + hoverPitch, yaw + hoverYaw, motionPaused());
+  const moving = scene.draw(delta, pitch + hoverPitch, yaw + hoverYaw, motionPaused(), gesture?.moved === true);
   if (moving && visible()) frame = requestAnimationFrame(draw);
   else stop();
 }
@@ -87,7 +87,7 @@ if ('IntersectionObserver' in window) {
     if (!entry.isIntersecting) return;
     preload.disconnect();
     try {
-      const { createEcosystemScene } = await import('./ecosystem-scene.js');
+      const { createEcosystemScene } = await import('./ecosystem-scene.js?v=4');
       scene = createEcosystemScene(canvas);
       if (!scene) return;
       scene.select(selected);
@@ -111,10 +111,8 @@ if ('IntersectionObserver' in window) {
 
 surface.addEventListener('pointerdown', event => {
   if (!scene || !event.isPrimary || event.button !== 0) return;
-  gesture = { id: event.pointerId, x: event.clientX, y: event.clientY, pitch, yaw, moved: false };
+  gesture = { id: event.pointerId, x: event.clientX, y: event.clientY, moved: false };
   surface.setPointerCapture(event.pointerId);
-  hoverPitch = 0;
-  hoverYaw = 0;
 });
 
 surface.addEventListener('pointermove', event => {
@@ -122,11 +120,22 @@ surface.addEventListener('pointermove', event => {
   if (gesture?.id === event.pointerId) {
     const dx = event.clientX - gesture.x;
     const dy = event.clientY - gesture.y;
-    if (Math.hypot(dx, dy) < 6 && !gesture.moved) return;
-    gesture.moved = true;
-    surface.dataset.dragging = '';
-    yaw = constrain(gesture.yaw + dx * .004, .70);
-    pitch = constrain(gesture.pitch + dy * .003, .27);
+    if (!gesture.moved) {
+      const distance = Math.hypot(dx, dy);
+      if (distance < 6) return;
+      // Start from the pose already visible and absorb the click/drag dead zone.
+      const orbit = scene.getOrbit();
+      gesture.pitch = orbit.pitch;
+      gesture.yaw = orbit.yaw;
+      gesture.x += dx * 6 / distance;
+      gesture.y += dy * 6 / distance;
+      gesture.moved = true;
+      hoverPitch = 0;
+      hoverYaw = 0;
+      surface.dataset.dragging = '';
+    }
+    yaw = constrain(gesture.yaw + (event.clientX - gesture.x) * .004, .70);
+    pitch = constrain(gesture.pitch + (event.clientY - gesture.y) * .003, .27);
   } else {
     if (event.pointerType !== 'mouse' || motionPaused()) return;
     const bounds = surface.getBoundingClientRect();

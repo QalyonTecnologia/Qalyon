@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 2.13.5
+
+- Suaviza a rotação da placa com mouse e a passagem do movimento do cursor para o arraste.
+
 ## 2.13.4
 
 - Preserva a plataforma isométrica do seletor de serviços e atualiza sua cena para Three.js, com giro manual e seleção de módulos.
